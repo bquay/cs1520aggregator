@@ -2,19 +2,52 @@
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
     <title>FanCrawler</title>
-    <script src="funcs.js">//</script>
+    <script src="file://C:\\Users\\devon\\Documents\\GitHub\\cs1520aggregator\\JSON\\mlb-teams.jsonp">//</script>
+    <script type="text/javascript">
+		function createTeamDropDown(league) {
+			var x = 0, options, option_str, name;
+
+			if (league === 'MLB') {
+				var jsonstr = JSON.stringify(mlbTeams);
+				teams = JSON.parse(jsonstr);
+				console.out(teams);
+			} else if (league === 'NBA') {
+				teams = JSON.parse(nbaTeams);
+			} else if (league === 'NFL') {
+				teams = JSON.parse(nflTeams);
+			} else if (league === 'NHL') {
+				teams = JSON.parse(nhlTeams);
+			}
+
+			while (teams.teams[x] != NULL) {
+				name = teams.teams[x].location + ' ' + teams.teams[x].mascot;
+				option_str = '<option value="' + name +'">' + name + '</option>';
+				options = options + option_str;
+				x++;
+			}
+
+			return options;
+		}
+		function populateTeams(teams) {
+			var league = document.getElementById('leagues').value;
+			var teamSelect = document.getElementById('teams');
+			// display team dropdown
+			teamSelect.style.display = 'block';
+			teamSelect.innerHTML = createTeamDropDown(league);
+			// display submit button
+			var submit = document.getElementById('submit-search');
+			submit.style.display = 'block';
+		}
+    </script>
     <style>
 		.center {
-			margin-left: auto;
-			margin-right: auto;
-			width: 70%;
-		}
-		#search {
-			float: left;
+			 margin-left: auto;
+			 margin-right: auto;
+			 width: 70%;
 		}
 		#header {
-			text-align: center;
-			font-family: Arial, sans-serif;  
+			 text-align: center;
+			 font-family: Arial, sans-serif;  
 		}
     </style>
   </head>
@@ -24,7 +57,7 @@
    </div>
    <div id="search">
      <form>
-       <select id="leagues" onchange="createTeamsDropDown();">
+       <select id="leagues" onchange="populateTeams();">
 		 <option disabled="disabled" selected="selected"></option>
          <optgroup label="Professional">
            <option value="mlb">MLB</option>
