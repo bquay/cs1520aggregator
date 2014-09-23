@@ -1,82 +1,55 @@
 <html>
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    <title>FanCrawler</title>
-    <script src="file://C:\\Users\\devon\\Documents\\GitHub\\cs1520aggregator\\JSON\\mlb-teams.jsonp">//</script>
-    <script type="text/javascript">
-		function createTeamDropDown(league) {
-			var x = 0, options, option_str, name;
-
-			if (league === 'MLB') {
-				var jsonstr = JSON.stringify(mlbTeams);
-				teams = JSON.parse(jsonstr);
-				console.out(teams);
-			} else if (league === 'NBA') {
-				teams = JSON.parse(nbaTeams);
-			} else if (league === 'NFL') {
-				teams = JSON.parse(nflTeams);
-			} else if (league === 'NHL') {
-				teams = JSON.parse(nhlTeams);
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+		<title>FanCrawler</title>
+		<script src="funcs.js">//</script>
+		<style>
+			body {
+				background-color: #1f2838;
+				color: #d2d4d7;
+				font-family: Arial, sans-serif;
 			}
-
-			while (teams.teams[x] != NULL) {
-				name = teams.teams[x].location + ' ' + teams.teams[x].mascot;
-				option_str = '<option value="' + name +'">' + name + '</option>';
-				options = options + option_str;
-				x++;
+			.center {
+				margin-left: auto;
+				margin-right: auto;
+				width: 70%;
 			}
-
-			return options;
-		}
-		function populateTeams(teams) {
-			var league = document.getElementById('leagues').value;
-			var teamSelect = document.getElementById('teams');
-			// display team dropdown
-			teamSelect.style.display = 'block';
-			teamSelect.innerHTML = createTeamDropDown(league);
-			// display submit button
-			var submit = document.getElementById('submit-search');
-			submit.style.display = 'block';
-		}
-    </script>
-    <style>
-		.center {
-			 margin-left: auto;
-			 margin-right: auto;
-			 width: 70%;
-		}
-		#header {
-			 text-align: center;
-			 font-family: Arial, sans-serif;  
-		}
-    </style>
-  </head>
-  <body>
-   <div id="header">
-     <h2 class="center">FanCrawler</h2>
-   </div>
-   <div id="search">
-     <form>
-       <select id="leagues" onchange="populateTeams();">
-		 <option disabled="disabled" selected="selected"></option>
-         <optgroup label="Professional">
-           <option value="mlb">MLB</option>
-           <option value="nba">NBA</option>
-           <option value="nfl">NFL</option>
-           <option value="nhl">NHL</option>
-         </optgroup>
-         <optgroup label="NCAA">
-           <option value="baseball">Baseball</option>
-           <option value="softball">Softball</option>
-           <option value="football">Football</option>
-           <option value="hockey">Hockey</option>
-           <option value="womens-basketball">Women's Basketball</option>
-           <option value="mens-basketball">Men's Basketball</option>
-        </optgroup>
-       </select>
-       <select id="teams" style="display:none"></select>
-       <input type="submit" id="submit-search" style="display:none" />
-     </form>
-   </div>
-  </body>
+			#search > form > select {
+				float:left;
+				margin-right:20px;
+			}
+			#header {
+				font-family: Arial, sans-serif;  
+			}
+		</style>
+    </head>
+	<body>
+		<div id="header">
+			<h1>FanCrawler</h1>
+		</div>
+		<div id="search">
+			<form>
+				<select id="leagues" onchange="createTeamsDropDown();">
+					<option disabled="disabled" selected="selected"></option>
+					<optgroup label="Professional">
+						<option value="mlb">MLB</option>
+						<option value="nba">NBA</option>
+						<option value="nfl">NFL</option>
+						<option value="nhl">NHL</option>
+					</optgroup>
+					<optgroup label="NCAA">
+						<option value="baseball">Baseball</option>
+						<option value="softball">Softball</option>
+						<option value="football">Football</option>
+						<option value="hockey">Hockey</option>
+						<option value="womens-basketball">Women's Basketball</option>
+						<option value="mens-basketball">Men's Basketball</option>
+					</optgroup>
+				</select>
+				<select id="teams" style="display:none"></select>
+				<input type="button" id="submit-search" style="display:none" value="submit" onclick="showResults();"/>
+			</form>
+		</div>
+		<div id="results"></div>
+	</body>
 </html
