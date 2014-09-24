@@ -121,18 +121,395 @@
             }
         ];
 
+var nbaTeams = [
+            {
+                location: "Atlanta",
+                mascot: "Hawks"
+            },
+			{
+                location: "Boston",
+                mascot: "Celtics"
+            },
+			{
+                location: "Charlotte",
+                mascot: "Bobcats"
+            },
+			{
+                location: "Chicago",
+                mascot: "Bulls"
+            },
+			{
+                location: "Cleveland",
+                mascot: "Cavaliers"
+            },
+			{
+                location: "Dallas",
+                mascot: "Mavericks"
+            },
+			{
+                location: "Denver",
+                mascot: "Nuggets"
+            },
+			{
+                location: "Detroit",
+                mascot: "Pistons"
+            },
+			{
+                location: "Golden State",
+                mascot: "Warriors"
+            },
+			{
+                location: "Houston",
+                mascot: "Rockets"
+            },
+			{
+                location: "Indiana",
+                mascot: "Pacers"
+            },
+			{
+                location: "LA",
+                mascot: "Clippers"
+            },
+			{
+                location: "LA",
+                mascot: "Lakers"
+            },
+			{
+                location: "Memphis",
+                mascot: "Grizzlies"
+            },
+			{
+                location: "Miami",
+                mascot: "Heat"
+            },
+			{
+                location: "Milwaukee",
+                mascot: "Timberwolves"
+            },
+			{
+                location: "New Jersey",
+                mascot: "Nets"
+            },
+			{
+                location: "New Orleans",
+                mascot: "Hornets"
+            },
+			{
+                location: "New York",
+                mascot: "Knicks"
+            },
+			{
+                location: "Oklahoma City",
+                mascot: "Thunder"
+            },
+			{
+                location: "Orlando",
+                mascot: "Magic"
+            },
+			{
+                location: "Philadelphia",
+                mascot: "Sixers"
+            },
+			{
+                location: "Phoenix",
+                mascot: "Suns"
+            },
+			{
+                location: "Portland",
+                mascot: "Trail Blazers"
+            },
+			{
+                location: "Sacramento",
+                mascot: "Kings"
+            },
+			{
+                location: "San Antonio",
+                mascot: "Spurs"
+            },
+			{
+                location: "Toronto",
+                mascot: "Raptors"
+            },
+			{
+                location: "Utah",
+                mascot: "Jazz"
+            },
+			{
+                location: "Washington",
+                mascot: "Wizards"
+            }
+		];
+
+var nflTeams = [
+			{
+                location: "Arizona",
+                mascot: "Cardinals"
+            },
+			{
+                location: "Atlanta",
+                mascot: "Falcons"
+            },
+			{
+                location: "Baltimore",
+                mascot: "Ravens"
+            },
+			{
+                location: "Buffalo",
+                mascot: "Bills"
+            },
+			{
+                location: "Carolina",
+                mascot: "Panthers"
+            },
+			{
+                location: "Chicago",
+                mascot: "Bears"
+            },
+			{
+                location: "Cincinnati",
+                mascot: "Bengals"
+            },
+			{
+                location: "Cleveland",
+                mascot: "Browns"
+            },
+			{
+                location: "Dallas",
+                mascot: "Cowboys"
+            },
+			{
+                location: "Denver",
+                mascot: "Broncos"
+            },
+			{
+                location: "Detroit",
+                mascot: "Lions"
+            },
+			{
+                location: "Green Bay",
+                mascot: "Packers"
+            },
+			{
+                location: "Houston",
+                mascot: "Texans"
+            },
+			{
+                location: "Indianapolis",
+                mascot: "Colts"
+            },
+			{
+                location: "Jacksonville",
+                mascot: "Jaguars"
+            },
+			{
+                location: "Kansas City",
+                mascot: "Chiefs"
+            },
+			{
+                location: "Miami",
+                mascot: "Dolphins"
+            },
+			{
+                location: "Minnesota",
+                mascot: "Vikings"
+            },
+			{
+                location: "New England",
+                mascot: "Patriots"
+            },
+			{
+                location: "New Orleans",
+                mascot: "Saints"
+            },
+			{
+                location: "New York",
+                mascot: "Giants"
+            },
+			{
+                location: "New York",
+                mascot: "Jets"
+            },
+			{
+                location: "Oakland",
+                mascot: "Raiders"
+            },
+			{
+                location: "Philadelphia",
+                mascot: "Eagles"
+            },
+			{
+                location: "Pittsburgh",
+                mascot: "Steelers"
+            },
+			{
+                location: "Saint Louis",
+                mascot: "Rams"
+            },
+			{
+                location: "San Diego",
+                mascot: "Chargers"
+            },
+			{
+                location: "San Francisco",
+                mascot: "49ers"
+            },
+			{
+                location: "Seattle",
+                mascot: "Seahawks"
+            },
+			{
+                location: "Tampa Bay",
+                mascot: "Buccaneers"
+            },
+			{
+                location: "Tennessee",
+                mascot: "Titans"
+            },
+			{
+                location: "Washington",
+                mascot: "Redskins"
+            }
+		];
+		
+var nhlTeams = [
+			{
+                location: "Anaheim",
+                mascot: "Ducks"
+            },
+			{
+                location: "Atlanta",
+                mascot: "Thrashers"
+            },
+			{
+                location: "Boston",
+                mascot: "Bruins"
+            },
+			{
+                location: "Buffalo",
+                mascot: "Sabres"
+            },
+			{
+                location: "Calgary",
+                mascot: "Flames"
+            },
+			{
+                location: "Carolina",
+                mascot: "Hurricanes"
+            },
+			{
+                location: "Chicago",
+                mascot: "Blackhawks"
+            },
+			{
+                location: "Colorado",
+                mascot: "Avalanche"
+            },
+			{
+                location: "Columbus",
+                mascot: "Blue Jackets"
+            },
+			{
+                location: "Dallas",
+                mascot: "Stars"
+            },
+			{
+                location: "Detroit",
+                mascot: "Red Wings"
+            },
+			{
+                location: "Edmonton",
+                mascot: "Oilers"
+            },
+			{
+                location: "Florida",
+                mascot: "Panthers"
+            },
+			{
+                location: "Los Angeles",
+                mascot: "Kings"
+            },
+			{
+                location: "Minnesota",
+                mascot: "Wild"
+            },
+			{
+                location: "Montreal",
+                mascot: "Canadiens"
+            },
+			{
+                location: "Nashville",
+                mascot: "Predators"
+            },
+			{
+                location: "New Jersey",
+                mascot: "Devils"
+            },
+			{
+                location: "New York",
+                mascot: "Islanders"
+            },
+			{
+                location: "New York",
+                mascot: "Rangers"
+            },
+			{
+                location: "Ottawa",
+                mascot: "Senators"
+            },
+			{
+                location: "Philadelphia",
+                mascot: "Flyers"
+            },
+			{
+                location: "Phoenix",
+                mascot: "Coyotes"
+            },
+			{
+                location: "Pittsburgh",
+                mascot: "Penguins"
+            },
+			{
+                location: "Saint Louis",
+                mascot: "Blues"
+            },
+			{
+                location: "San Jose",
+                mascot: "Sharks"
+            },
+			{
+                location: "Tampa Bay",
+                mascot: "Lightning"
+            },
+			{
+                location: "Toronto",
+                mascot: "Maple Leafs"
+            },
+			{
+                location: "Vancouver",
+                mascot: "Canucks"
+            },
+			{
+                location: "Washington",
+                mascot: "Capitals"
+            }
+		];
+		
 function populateTeams(league) {
 	var x = 0, options, option_str, name;
 	options = '<option disabled="disabled" selected="selected"></option>';
 
 	if (league === 'MLB') {
-		teams = JSON.parse(mlbTeams);
+		teams = mlbTeams;
+		//teams = JSON.parse(mlbTeams);
 	} else if (league === 'NBA') {
-		teams = JSON.parse(mlbTeams);
+		teams = nbaTeams;
+		//teams = JSON.parse(nbaTeams);
 	} else if (league === 'NFL') {
-		teams = JSON.parse(mlbTeams);
+		teams = nflTeams;
+		//teams = JSON.parse(nflTeams);
 	} else if (league === 'NHL') {
-		teams = JSON.parse(mlbTeams);
+		teams = nhlTeams;
+		//teams = JSON.parse(nhlTeams);
 	}
 	// using mlbTeams because setting to teams var failed, as did using external JSON file
 	while (mlbTeams[x] != null) {
