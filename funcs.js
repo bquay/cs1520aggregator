@@ -498,22 +498,22 @@ function populateTeams(league) {
 	var x = 0, options, option_str, name;
 	options = '<option disabled="disabled" selected="selected"></option>';
 
-	if (league === 'MLB') {
+	if (league === 'mlb') {
 		teams = mlbTeams;
 		//teams = JSON.parse(mlbTeams);
-	} else if (league === 'NBA') {
+	} else if (league === 'nba') {
 		teams = nbaTeams;
 		//teams = JSON.parse(nbaTeams);
-	} else if (league === 'NFL') {
+	} else if (league === 'nfl') {
 		teams = nflTeams;
 		//teams = JSON.parse(nflTeams);
-	} else if (league === 'NHL') {
+	} else if (league === 'nhl') {
 		teams = nhlTeams;
 		//teams = JSON.parse(nhlTeams);
 	}
 	// using mlbTeams because setting to teams var failed, as did using external JSON file
-	while (mlbTeams[x] != null) {
-		name = mlbTeams[x].location + ' ' + mlbTeams[x].mascot;
+	while (teams[x] != null) {
+		name = teams[x].location + ' ' + teams[x].mascot;
 		option_str = '<option value="' + name +'">' + name + '</option>';
 		console.log(option_str);
 		options = options + option_str;
