@@ -1,0 +1,148 @@
+"""
+#self.response.out.write("<html><body>Hello, " + search_term + "</body></html>")
+      url_base = "bleacherreport.com"
+      search_postfix = "/search?q="
+      
+      #handle multiword queries (add a '+' for spaces")
+      terms = str.split(str(search_term), ' ')
+      search_term = ''
+      for word in terms:
+        search_term = search_term + word
+        if word is not terms[-1]:
+          search_term = search_term + '+'
+      
+      search_postfix = search_postfix + search_term
+      connection = httplib.HTTPConnection(url_base)
+      connection.request("GET", "/" + search_postfix)
+      r1 = connection.getresponse()
+      data = r1.read()
+      self.response.out.write("<html><body>")
+      #self.response.out.write(data)
+      
+      parser = Parser()
+      parser.feed(data)
+      
+      #self.response.out.write(str(parser.links))
+      
+      # we have the relative links now, so build abs links and display
+      self.response.out.write("<ul style=none>")
+      for link in parser.links:
+        full_path = "http://" + url_base + link
+        self.response.out.write("<li>")
+        self.response.out.write("<a href=" + full_path + ">" + full_path + "</a>")
+        self.response.out.write("</li>")
+      
+
+      self.response.out.write("</body></html>")
+"""
+
+# failed searching
+"""      
+      # add all three to a list
+      search_list = [team, location, mascot]
+      search_results = {}
+      
+      test = ''
+
+      for item in search_list:
+        #search_results[item] = re.findall(item, html)
+        search_results[item] = [m.start() for m in re.finditer(item, html)]
+        
+
+      for key in search_results:
+        test += key + '<br>'
+        for pos in search_results[key]:
+          test += html[(pos - 15):(pos + 10)] + '<br>'
+        test += '<br>'
+        
+      # dedup
+      for pos in search_results[team]:
+        if pos in search_results[location]:
+          search_results[location].remove(pos)
+          
+        # need to add add length of location to find dups for mascot
+        pos_modified = pos + len(location) + 1
+        test += str(pos_modified)
+        if pos_modified in search_results[mascot]:
+          search_results[mascot].remove(pos_modified)
+          
+        
+      # only look where most of the matches are, maybe
+        
+
+      # ok, now we have all the positions, without overlaps
+      # look for links around these positions
+      # treat all positions equally, maybe
+      links_pos = {}
+      for key in search_results:
+        links_pos[key] = []
+        for pos in search_results[key]:
+          # look from beginning to pos
+          pos1 = str.rfind(html, 'href', 0, pos)
+          # look from pos to end
+          pos2 = str.find(html, 'href', pos)
+          # take the one that's closest (in case of tie, take the one before)
+          if (pos - pos1) <= (pos2 - pos):
+            links_pos[key].append(pos1)
+          else:
+            links_pos[key].append(pos2)
+      
+      # dedup link positions!
+      links_pos_list = []
+      seen = set()
+      for key in links_pos:
+        for pos in links_pos[key]:
+          if pos not in seen:
+            links_pos_list.append(pos)
+            seen.add(pos)
+      
+      links = []
+      # hrefs will look like this href=(' or ")<link>(' or ")
+      for pos in links_pos_list:
+        link_start = 0
+        link_end = 0
+        single_pos = str.find(html, "'", pos)
+        double_pos = str.find(html, '"', pos)
+        if single_pos < double_pos:
+          link_start = single_pos + 1
+        else:
+          link_start = double_pos + 1
+          
+        # have the beginning, need the end
+        if link_start - 1 == single_pos:
+          link_end = str.find(html, "'", link_start)
+        else:
+          link_end = str.find(html, '"', link_start)
+            
+        links.append(html[link_start:link_end])
+  
+      # links in scripts have escaped slashes that are messing stuff up
+      # take out any link that has a backslash
+      # also get rid of len == 1 links ('#', as an example)
+      good_links = []
+      for link in links:
+        if '\\' not in link:
+          if len(link) > 3:
+            good_links.append(link)
+
+      # dedup links!
+      unique_links = []
+      seen = set()
+      for link in good_links:
+        if link not in seen:
+          unique_links.append(link)
+          seen.add(link) 
+        
+      # ok, how to choose which one
+      # I think picking the shortest will probably work almost always
+      # do this for now (a keyword check is probably a good idea, too)
+      # measure shortest from the .com, to prevent the domain from being included
+    
+      # make sure all links are relative
+      
+      for i,link in enumerate(unique_links):
+        if '.com' in link:
+          unique_links[i] = link[str.find(link, '.com') + 4:]
+   
+      the_link = self.choose_link(unique_links, location, league)
+"""

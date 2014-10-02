@@ -1,5 +1,4 @@
-mlbTeams = {
-	teams : [
+mlbTeams = [
             {
                 location: "Arizona",
                 mascot: "Diamondbacks"
@@ -120,4 +119,4 @@ mlbTeams = {
                 location: "Washington",
                 mascot: "Nationals"
             },
-        ]}
+        ]

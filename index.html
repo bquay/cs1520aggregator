@@ -2,7 +2,7 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
 		<title>FanCrawler</title>
-		<script src="funcs.js">//</script>
+		<script src="scripts/funcs.js">//</script>
 		<style>
 			body {
 				background-color: #1f2838;
@@ -28,7 +28,8 @@
 			<h1>FanCrawler</h1>
 		</div>
 		<div id="search">
-			<form>
+			<form name="searchForm" method="post" action="search">
+				<input type="hidden" name="league" id="league" />
 				<select id="leagues" onchange="createTeamsDropDown();">
 					<option disabled="disabled" selected="selected"></option>
 					<optgroup label="Professional">
@@ -46,8 +47,9 @@
 						<option value="mens-basketball">Men's Basketball</option>
 					</optgroup>
 				</select>
+				<input type="hidden" name="team" id="team" />
 				<select id="teams" style="display:none"></select>
-				<input type="button" id="submit-search" style="display:none" value="submit" onclick="showResults();"/>
+				<input type="button" id="submit-search" style="display:none" value="submit" onclick="chooseLeagueAndTeam();"/>
 			</form>
 		</div>
 		<div id="results"></div>
