@@ -11,12 +11,12 @@
 </head>
 <body>
 <div id="header">
-	<h1><a href="index.html">FanCrawler</a></h1>
+	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2>
 		{% if login %}
 	<div id="signin"><a href="{{login}}">Sign In</a></div>
 		{% else %}
-	<div id="signin"><a href="{{logout}}">Sign Out</a></div>
+	<div id="signout"><a href="{{logout}}">Sign Out</a></div>
 	<div id="editpro"><a href="editPro.html">Edit Profile</a>: {{nickname}}</div>
 		{% endif %}
 </div>
@@ -53,12 +53,6 @@
 				<input type="hidden" name="team" id="team" />
 				<select id="teams1" style="display:none"></select>
 			</form>
-		</div>
-		<div class="post" id="results">
-		    {% for article in articles %}
-		        {article}
-		    {% endfor %}
-		
 		</div>
 	</div>
 	<!-- end #content -->

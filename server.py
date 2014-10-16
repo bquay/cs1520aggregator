@@ -92,8 +92,6 @@ class MainPage(webapp2.RequestHandler):
         
         render_template(self, 'index.html', template_values)
 
-        #self.response.out.write(myresponse)
-
 class SearchQuery(webapp2.RequestHandler):
 
     def post(self):
@@ -148,16 +146,31 @@ class SearchQuery(webapp2.RequestHandler):
         articles = self.get_articles(links)
       
       
-        # output
-        self.response.out.write("<html><body>")
+        template_values = {
+            'articles' : articles
+        }
       
-
-
-        self.response.out.write(str(team) + str(articles))
-
-
-
-        self.response.out.write("</body></html>")
+        # output
+        filename = 'search_header.html'
+        f = open(filename, 'r')
+        header = f.read()
+        f.close()
+        
+        filename = 'search_footer.html'
+        f = open(filename, 'r')
+        footer = f.read()
+        f.close()
+        
+        #render_template(self, 'search.html', template_values)      
+          
+        self.response.out.write(header)
+        
+        for article in articles:
+            self.response.out.write(article)
+            self.response.out.write('<br>')
+            
+        self.response.out.write(footer)
+        
       
     def get_team_links(self, sites, team, league):
     
@@ -270,6 +283,7 @@ class SearchQuery(webapp2.RequestHandler):
         article_keys = {'espn': 'result', 'si': 'list-item', 'bleacherreport': 'block-list_item'}
         articles = []
         for link in links:
+            per_site_counter = 0
             data = ''
             try:
                 f = urlopen(link)
@@ -292,7 +306,8 @@ class SearchQuery(webapp2.RequestHandler):
             #articles.append(article_key)
             
             # get the tags corresponding to the keys
-            
+            if per_site_counter > 10:
+                break
             for tag in soup.find_all(True):
                 try:
                     class_val = tag['class']
@@ -300,9 +315,11 @@ class SearchQuery(webapp2.RequestHandler):
                     if len(class_val) == 1:
                         if article_key in class_val:
                             articles.append(tag)
+                            per_site_counter += 1
                     elif 'bleacherreport' in link:
                         if article_key in class_val:
                             articles.append(tag)
+                            per_site_counter += 1
                 except (KeyError, UnicodeDecodeError):
                     pass
             

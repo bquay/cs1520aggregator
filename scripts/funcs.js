@@ -540,10 +540,10 @@ function showResults() {
 	teamElement.value = teams.options[teams.selectedIndex].text;
 	
 	var search = league + ' - ' + team;
-	
+	/*
 	var results = document.getElementById('results');
 	results.innerHTML = '<p>' + search + '</p>';
-	
+	*/
 	document.getElementById("search").submit();
 }
 
@@ -605,12 +605,6 @@ function removeTeam(){
 	searchForm.removeChild(teamSelect);
 	searchForm.removeChild(breaks);
 	numTeams--;
-}
-
-function showResultsDiv() {
-    var resultsElement = document.getElementById('results');
-    resultsElement.style.height = 400;
-
 }
 
 function chooseTeams() {
