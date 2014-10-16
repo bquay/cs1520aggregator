@@ -133,7 +133,7 @@ var nbaTeams = [
             },
 			{
                 location: "Charlotte",
-                mascot: "Bobcats"
+                mascot: "Hornets"
             },
 			{
                 location: "Chicago",
@@ -193,7 +193,7 @@ var nbaTeams = [
             },
 			{
                 location: "New Orleans",
-                mascot: "Hornets"
+                mascot: "Pelicans"
             },
 			{
                 location: "New York",

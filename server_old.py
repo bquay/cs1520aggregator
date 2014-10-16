@@ -6,7 +6,7 @@ from HTMLParser import HTMLParser
 import re
 from threading import Thread
 import Queue
-import bs4
+from bs4 import BeautifulSoup
 
 q = Queue.Queue()
 
@@ -120,7 +120,7 @@ class SearchQuery(webapp2.RequestHandler):
         
       team_sites = []
       threads = []
-      # go to sites and find team page
+      # go to sites and find team page url
       for site in sites:
         threads.append(Thread(target=self.find_site, args = (team, league, site)))
 
@@ -144,46 +144,17 @@ class SearchQuery(webapp2.RequestHandler):
       
       for thread in threads:
         thread.join()      
-     
-      # parse team sites for articles
-      # this kinda sucks too
-      # will do better job parsing in future
-      parse_key = {}
-      for site in sites:
-        if 'espn' in site:
-          parse_key[site] = 'mod-content'
-        elif 'si' in site:
-          parse_key[site] = 'river-body'
-        elif 'bleacher' in site:
-          parse_key[site] = 'team-stream'
-        elif 'yahoo' in site:
-          parse_key[site] = 'bd'
-        elif 'fox' in site:
-          parse_key[site] = 'buzz-container'
-
-      articles = {}
-      team_html = []
-      while q.empty() is not True:
-        team_html.append(q.get())
-        
-      for site in sites:
-        html = ''
-        for url, data in team_html:
-          if site in url:
-            html = data
-            break
-        articles[site] = self.get_articles(parse_key, site, html)
 
       # output
-      #self.response.out.write("<html><body>")
+      self.response.out.write("<html><body>")
       
 
 
-      self.response.out.write(str(team_html[1][1]))
+      self.response.out.write()
 
 
 
-      #self.response.out.write("</body></html>")
+      self.response.out.write("</body></html>")
     
     def get_articles(self, parse_key, site, html):
       parser = Team_parser(parse_key, site)
