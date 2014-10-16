@@ -71,7 +71,7 @@ class MainPage(webapp2.RequestHandler):
             logout_url = users.create_logout_url('/')
             name = user.nickname()
             """ check to see if they have chosen teams """
-            user_query = UserTeams.query(ancestor=user_key(DEFAULT_USER_NAME), UserTeams.user == user)
+            user_query = UserTeams.query((UserTeams.user == user), ancestor=user_key(DEFAULT_USER_NAME))
             user_entry = user_query.fetch(1)
 
             if (user_entry):
@@ -288,15 +288,15 @@ class SearchQuery(webapp2.RequestHandler):
                 continue
           
             article_key = unicode(article_key)
-            articles.append(link)
-            articles.append(article_key)
+            #articles.append(link)
+            #articles.append(article_key)
             
             # get the tags corresponding to the keys
             
             for tag in soup.find_all(True):
                 try:
                     class_val = tag['class']
-                    articles.append((class_val, len(class_val)))
+                    #articles.append((class_val, len(class_val)))
                     if len(class_val) == 1:
                         if article_key in class_val:
                             articles.append(tag)
@@ -375,8 +375,8 @@ class ChooseTeams(webapp2.RequestHandler):
         render_template(self, 'editPro.html', template_values)
     
     def post(self):
-        team = self.response.get("team")
-        league = self.response.get("league")
+        team = self.request.get("team")
+        league = self.request.get("league")
         
         userTeam = UserTeams(parent=user_key(DEFAULT_USER_NAME))
         
