@@ -205,7 +205,7 @@ class SearchQuery(webapp2.RequestHandler):
             for link in links_team_filter:
                 try:
                     if mascot in str(link.text).lower():
-                    the_link = str(link['href'])
+                        the_link = str(link['href'])
                 except (KeyError, UnicodeEncodeError):
                     pass
 
@@ -214,7 +214,7 @@ class SearchQuery(webapp2.RequestHandler):
                 for link in links_team_filter:
                     try:
                         if location in str(link.text).lower():
-                        the_link = str(link['href'])
+                            the_link = str(link['href'])
                     except (KeyError, UnicodeEncodeError):
                         pass
                 
@@ -224,8 +224,8 @@ class SearchQuery(webapp2.RequestHandler):
                     try:
                         if mascot in str(link.text).lower():
                             the_link = str(link['href'])
-                        except (KeyError, UnicodeEncodeError):
-                            pass
+                    except (KeyError, UnicodeEncodeError):
+                         pass
 
             # if not found in previous step, look for location in link text
             if the_link == '':
@@ -233,8 +233,8 @@ class SearchQuery(webapp2.RequestHandler):
                     try:
                         if location in str(link.text).lower():
                             the_link = str(link['href'])
-                        except (KeyError, UnicodeEncodeError):
-                            pass
+                    except (KeyError, UnicodeEncodeError):
+                        pass
                 
             # still none found? Well... look at the href values
             # for mascot
@@ -248,11 +248,11 @@ class SearchQuery(webapp2.RequestHandler):
             # and then for location, with dashes replacing spaces
             if the_link == '':
                 for link in all_links:
-                try:
-                    if location.replace(' ', '-') in str(link['href']).lower():
-                        the_link = str(link['href'])
-                except (KeyError, UnicodeEncodeError):
-                    pass
+                    try:
+                        if location.replace(' ', '-') in str(link['href']).lower():
+                            the_link = str(link['href'])
+                    except (KeyError, UnicodeEncodeError):
+                        pass
                   
             links_dict[site] = the_link
             #"""
