@@ -46,7 +46,7 @@ def team_key(team_name=DEFAULT_TEAM_NAME):
 	"""creates a Datastore key for a Team entity with team_name"""
 	return ndb.Key('Team', team_name);
 
-class Teams(ndb.Model):
+class Team(ndb.Model):
 	league = ndb.StringProperty(indexed=False)
 	name = ndb.StringProperty(indexed=False)
 
@@ -67,24 +67,10 @@ class MainPage(webapp2.RequestHandler):
         name = ''
         
         if user:
-<<<<<<< HEAD
-          logout_url = users.create_logout_url('/')
-          name = user.nickname()
-          """ check to see if they have chosen teams """
-          user_query = UserTeams.query(ancestor=user_key(name))
-          user_entry = user_query.fetch(1)
-		  
-          if (user_entry):
-            """ direct to feed """
-            self.redirect('/feed')
-          else:
-            """ direct to choose teams """
-            self.redirect('/choose_teams')
-=======
 			logout_url = users.create_logout_url('/')
 			name = user.nickname()
 			""" check to see if they have chosen teams """
-			user_query = UserTeams.query(ancestor=user_key(user_name))
+			user_query = UserTeams.query(ancestor=user_key(DEFAULT_USER_NAME), UserTeams.user == user)
 			user_entry = user_query.fetch(1)
 
 			if (user_entry):
@@ -93,7 +79,6 @@ class MainPage(webapp2.RequestHandler):
 			else:
 				""" direct to choose teams """
 				self.redirect('/choose_teams')
->>>>>>> FETCH_HEAD
         else:
 			login_url = users.create_login_url('/')
           
@@ -325,35 +310,21 @@ class SearchQuery(webapp2.RequestHandler):
 		return articles
 
 class Feed(webapp2.RequestHandler):
-  def post(self):
-    self.response.headers['Content-type'] = 'text/html'
+	def get(self):
+        self.response.headers['Content-type'] = 'text/html'
 
-    filename = 'userPro.html'
+        filename = 'userPro.html'
         
-    f = open(filename, 'r')
-    myresponse = f.read()
+        f = open(filename, 'r')
+        myresponse = f.read()
         
-    user = users.get_current_user()
+        user = users.get_current_user()
         
-    login_url = ''
-    logout_url = ''
+        login_url = ''
+        logout_url = ''
         
-    name = ''
+        name = ''
         
-<<<<<<< HEAD
-    if user:
-      logout_url = users.create_logout_url('/')
-      name = user.nickname()
-		  
-    else:
-      login_url = users.create_login_url('/')
-          
-    template_values = {
-      'login' : login_url,
-      'logout' : logout_url,
-      'nickname' : name
-    }
-=======
         if user:
 			logout_url = users.create_logout_url('/')
 			name = user.nickname()
@@ -366,41 +337,26 @@ class Feed(webapp2.RequestHandler):
 			'logout' : logout_url,
 			'nickname' : name
         }
->>>>>>> FETCH_HEAD
         
         
-    render_template(self, 'userPro.html', template_values)
+        render_template(self, 'userPro.html', template_values)
 
 class ChooseTeams(webapp2.RequestHandler):
-  def get(self):
-    self.response.headers['Content-type'] = 'text/html'
+	def get(self):
+        self.response.headers['Content-type'] = 'text/html'
 
-    filename = 'editPro.html'
+        filename = 'editPro.html'
         
-    f = open(filename, 'r')
-    myresponse = f.read()
+        f = open(filename, 'r')
+        myresponse = f.read()
         
-    user = users.get_current_user()
+        user = users.get_current_user()
         
-    login_url = ''
-    logout_url = ''
+        login_url = ''
+        logout_url = ''
         
-    name = ''
+        name = ''
         
-<<<<<<< HEAD
-    if user:
-      logout_url = users.create_logout_url('/')
-      name = user.nickname()
-		  
-    else:
-      login_url = users.create_login_url('/')
-          
-    template_values = {
-      'login' : login_url,
-      'logout' : logout_url,
-      'nickname' : name
-    }
-=======
         if user:
 			logout_url = users.create_logout_url('/')
 			name = user.nickname()
@@ -413,26 +369,23 @@ class ChooseTeams(webapp2.RequestHandler):
 			'logout' : logout_url,
 			'nickname' : name
         }
->>>>>>> FETCH_HEAD
         
         
-    render_template(self, 'editPro.html', template_values)
+        render_template(self, 'editPro.html', template_values)
 	
-  def post(self):
-    team = self.response.get("team")
-    league = self.response.get("league")
+	def post(self):
+		team = self.response.get("team")
+		league = self.response.get("league")
 		
-    user_name = self.request.get('user_name', DEFAULT_USER_NAME)
+		userTeam = UserTeams(parent=user_key(DEFAULT_USER_NAME))
 		
-    userTeam = UserTeams(parent=user_key(user_name))
+		userTeam.user = users.get_current_user()
+		userTeam.league = league
+		userTeam.team = team
 		
-    userTeam.user = users.get_current_user()
-    userTeam.league = league
-    userTeam.team = team
+		userTeam.put()
 		
-    userTeam.put()
-		
-    self.redirect('/feed')
+		self.redirect('/feed')
 	
 app = webapp2.WSGIApplication([
     ('/', MainPage),
