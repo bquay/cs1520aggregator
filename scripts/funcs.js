@@ -620,7 +620,7 @@ function chooseTeams() {
     var leagueInput = document.getElementById('league')
 	leagueInput.value = leagues.options[leagues.selectedIndex].text;
 	
-	var teams = document.getElementById('team1');
+	var teams = document.getElementById('teams1');
 	var teamInput = document.getElementById('team');
 	teamInput.value = teams.options[teams.selectedIndex].text;
 	
