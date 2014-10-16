@@ -12,6 +12,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 import os
 
+
 q = Queue.Queue()
 
 def render_template(handler, templatename, templatevalues):
