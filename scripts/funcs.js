@@ -1,58 +1,4 @@
-function populateTeams(league) {
-	var x = 0, options, option_str, name;
-	options = '<option disabled="disabled" selected="selected"></option>';
-
-	if (league === 'mlb') {
-		teams = mlbTeams;
-		//teams = JSON.parse(mlbTeams);
-	} else if (league === 'nba') {
-		teams = nbaTeams;
-		//teams = JSON.parse(nbaTeams);
-	} else if (league === 'nfl') {
-		teams = nflTeams;
-		//teams = JSON.parse(nflTeams);
-	} else if (league === 'nhl') {
-		teams = nhlTeams;
-		//teams = JSON.parse(nhlTeams);
-	}
-	
-	while (teams[x] != null) {
-		name = teams[x].location + ' ' + teams[x].mascot;
-		option_str = '<option value="' + name +'">' + name + '</option>';
-		console.log(option_str);
-		options = options + option_str;
-		x++;
-	}
-
-	return options;
-}
-
-function createTeamsDropDown(teams) {
-	var league = document.getElementById('leagues').value;
-	var teamSelect = document.getElementById('teams');
-	// display team dropdown
-	teamSelect.style.display = 'block';
-	teamSelect.innerHTML = populateTeams(league);
-	// display submit button
-	var submit = document.getElementById('submit-search');
-	submit.style.display = 'block';
-}
-
-function chooseLeagueAndTeam() {
-	var leagues = document.getElementById('leagues');
-	var chosenLeague = leagues.options[leagues.selectedIndex].text;
-	var league = document.getElementById('league');
-	league.value = chosenLeague;
-	
-	var teams = document.getElementById('teams');
-	var chosenTeam = teams.options[teams.selectedIndex].text;
-	var team = document.getElementById('team');
-	team.value = chosenTeam;
- 
-  document.searchForm.submit();
-	
-}
-
+var numTeams = 1;
 var mlbTeams = [
             {
                 location: "Arizona",
@@ -187,7 +133,7 @@ var nbaTeams = [
             },
 			{
                 location: "Charlotte",
-                mascot: "Bobcats"
+                mascot: "Hornets"
             },
 			{
                 location: "Chicago",
@@ -247,7 +193,7 @@ var nbaTeams = [
             },
 			{
                 location: "New Orleans",
-                mascot: "Hornets"
+                mascot: "Pelicans"
             },
 			{
                 location: "New York",
@@ -548,3 +494,115 @@ var nhlTeams = [
                 mascot: "Capitals"
             }
 		];
+		
+function populateTeams(league) {
+	var x = 0, options, option_str, name, teams;
+	options = '<option disabled="disabled" selected="selected"></option>';
+
+	if (league === 'mlb') {
+		teams = mlbTeams;
+		//teams = JSON.parse(mlbTeams);
+	} else if (league === 'nba') {
+		teams = nbaTeams;
+		//teams = JSON.parse(nbaTeams);
+	} else if (league === 'nfl') {
+		teams = nflTeams;
+		//teams = JSON.parse(nflTeams);
+	} else if (league === 'nhl') {
+		teams = nhlTeams;
+		//teams = JSON.parse(nhlTeams);
+	} else{}
+	
+	while (teams[x] != null) {
+		name = teams[x].location + ' ' + teams[x].mascot;
+		option_str = '<option value="' + name +'">' + name + '</option>';
+		console.log(option_str);
+		options = options + option_str;
+		x++;
+	}
+	return options;
+}
+
+function createTeamsDropDown() {
+	var league = document.getElementById('leagues'+ numTeams).value;
+	var teamSelect = document.getElementById('teams'+ numTeams);
+	teamSelect.innerHTML = populateTeams(league);
+	teamSelect.style.display = "block";
+}
+
+function showResults() {
+	var leagues = document.getElementById('leagues1');
+	var leagueElement = document.getElementById('league');
+	leagueElement.value = leagues.options[leagues.selectedIndex].text;
+	
+	var teams = document.getElementById('teams1');
+	var teamElement = document.getElementById('team');
+	teamElement.value = teams.options[teams.selectedIndex].text;
+	
+	var search = league + ' - ' + team;
+	
+	var results = document.getElementById('results');
+	results.innerHTML = '<p>' + search + '</p>';
+	
+	document.getElementById("search").submit();
+}
+
+function showResultsAll() {
+	for (i = numTeams; i > 0; i--) {
+		var leagues = document.getElementById('leagues' + i);
+		var league = leagues.options[leagues.selectedIndex].text;
+	
+		var teams = document.getElementById('teams' + i);
+		var team = teams.options[teams.selectedIndex].text;
+	
+		var search = league + ' - ' + team;
+	
+		var results = document.getElementById('results');
+		results.innerHTML = results.innerHTML + '<br><p>' + search + '</p>';
+	}
+}
+
+function addTeam(){
+	numTeams++;
+	var searchForm = document.getElementById('search');
+	var newLine = document.createElement('div');
+	newLine.setAttribute('id',"break" + numTeams);
+	newLine.innerHTML = "<br><br>";
+	searchForm.appendChild(newLine);
+	var leagueSelect = document.createElement('select');
+	leagueSelect.setAttribute('id','leagues' + numTeams);
+	leagueSelect.setAttribute('onchange',"createTeamsDropDown();");
+	var leagueString = "<option disabled=\"disabled\" selected=\"selected\"></option>";
+	leagueString = leagueString + "<optgroup label=\"Professional\">";
+	leagueString = leagueString + "<option value=\"mlb\">MLB</option>";
+	leagueString = leagueString + "<option value=\"nba\">NBA</option>";
+	leagueString = leagueString + "<option value=\"nfl\">NFL</option>";
+	leagueString = leagueString + "<option value=\"nhl\">NHL</option>";
+	leagueString = leagueString + "</optgroup>";
+	leagueString = leagueString + "<optgroup label=\"NCAA\">";
+	leagueString = leagueString + "<option value=\"baseball\">Baseball</option>";
+	leagueString = leagueString + "<option value=\"softball\">Softball</option>";
+	leagueString = leagueString + "<option value=\"football\">Football</option>";
+	leagueString = leagueString + "<option value=\"hockey\">Hockey</option>";
+	leagueString = leagueString + "<option value=\"womens-basketball\">Women's Basketball</option>";
+	leagueString = leagueString + "<option value=\"mens-basketball\">Men's Basketball</option>";
+	leagueString = leagueString + "</optgroup>";
+	leagueSelect.innerHTML = leagueString;
+	searchForm.appendChild(leagueSelect);
+	var teamSelect = document.createElement('select');
+	teamSelect.setAttribute('id','teams'+numTeams);
+	teamSelect.innerHTML = "<option disabled=\"disabled\" selected=\"selected\"></option>";
+	teamSelect.style.display ='none';
+	searchForm.appendChild(teamSelect);
+}
+
+function removeTeam(){
+	var searchForm = document.getElementById('search');
+	var leagueSelect = document.getElementById('leagues' +numTeams);
+	var teamSelect = document.getElementById('teams' +numTeams);
+	var breaks = document.getElementById('break' + numTeams);
+	searchForm.removeChild(leagueSelect);
+	searchForm.removeChild(teamSelect);
+	searchForm.removeChild(breaks);
+	numTeams--;
+}

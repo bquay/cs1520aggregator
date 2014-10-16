@@ -7,8 +7,17 @@ import re
 from threading import Thread
 import Queue
 from bs4 import BeautifulSoup
+from google.appengine.ext.webapp import template
+from google.appengine.api import users
+from google.appengine.ext import db
+import os
 
 q = Queue.Queue()
+
+def render_template(handler, templatename, templatevalues):
+  path = os.path.join(os.path.dirname(__file__), templatename)
+  html = template.render(path, templatevalues)
+  handler.response.out.write(html)
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -18,8 +27,30 @@ class MainPage(webapp2.RequestHandler):
         
         f = open(filename, 'r')
         myresponse = f.read()
+        
+        user = users.get_current_user()
+        
+        login_url = ''
+        logout_url = ''
+        
+        name = ''
+        
+        if user:
+          logout_url = users.create_logout_url('/')
+          name = user.nickname()
+        else:
+          login_url = users.create_login_url('/')
+          
+        template_values = {
+          'login' : login_url,
+          'logout' : logout_url,
+          'nickname' : name
+        }
+        
+        
+        render_template(self, 'index.html', template_values)
 
-        self.response.out.write(myresponse)
+        #self.response.out.write(myresponse)
 
 class SearchQuery(webapp2.RequestHandler):
 
@@ -27,6 +58,7 @@ class SearchQuery(webapp2.RequestHandler):
       self.search()
 
     def search(self):
+       
       team = self.request.get("team")
       path = 'text_files/sports_sites/'
       filename = 'sports_sites.txt'
@@ -79,7 +111,7 @@ class SearchQuery(webapp2.RequestHandler):
       
 
 
-      self.response.out.write(str(articles))
+      self.response.out.write(str(team) + str(articles))
 
 
 

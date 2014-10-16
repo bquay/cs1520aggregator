@@ -91,7 +91,8 @@ class SearchQuery(webapp2.RequestHandler):
 
 
     def search(self):
-      team = self.request.get("team")
+      #team = self.request.get("teams1")
+      team = self.request.arguments()
       path = 'text_files/sports_sites/'
       filename = 'sports_sites.txt'
       sites = []
