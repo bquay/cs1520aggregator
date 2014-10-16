@@ -606,3 +606,24 @@ function removeTeam(){
 	searchForm.removeChild(breaks);
 	numTeams--;
 }
+
+function showResultsDiv() {
+    var resultsElement = document.getElementById('results');
+    resultsElement.style.height = 400;
+
+}
+
+function chooseTeams() {
+    var formElement = document.getElementById('addTeams');
+    
+    var leagues = document.getElementById('leagues1');
+    var leagueInput = document.getElementById('league')
+	leagueInput.value = leagues.options[leagues.selectedIndex].text;
+	
+	var teams = document.getElementById('team1');
+	var teamInput = document.getElementById('team');
+	teamInput.value = teams.options[teams.selectedIndex].text;
+	
+	formElement.submit()
+
+}

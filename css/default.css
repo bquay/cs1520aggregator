@@ -231,6 +231,14 @@ td h1{
 	float: right;
 }
 
+#results {
+    overflow-y: auto;
+    visibility: none;
+    height: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 /* scrollbar*/
 

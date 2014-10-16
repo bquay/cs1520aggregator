@@ -64,7 +64,7 @@ class SearchQuery(webapp2.RequestHandler):
       filename = 'sports_sites.txt'
       sites = []
       with open(path + filename) as f:
-            sites = f.readlines()
+        sites = f.readlines()
       
       for i, site in enumerate(sites):
         sites[i] = site.strip()
@@ -111,7 +111,7 @@ class SearchQuery(webapp2.RequestHandler):
       
 
 
-      self.response.out.write(str(team) + str(articles))
+      self.response.out.write(str(articles))
 
 
 
@@ -246,15 +246,15 @@ class SearchQuery(webapp2.RequestHandler):
           continue
           
         article_key = unicode(article_key)
-        articles.append(link)
-        articles.append(article_key)
+        #articles.append(link)
+        #articles.append(article_key)
         
         # get the tags corresponding to the keys
         
         for tag in soup.find_all(True):
           try:
             class_val = tag['class']
-            articles.append((class_val, len(class_val)))
+            #articles.append((class_val, len(class_val)))
             if len(class_val) == 1:
               if article_key in class_val:
                 articles.append(tag)
