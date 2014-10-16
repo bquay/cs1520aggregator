@@ -1,0 +1,263 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url(images/wembley.jpg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #cccccc;
+}
+
+h1, h2, h3 {
+	margin-bottom: 15px;
+	/*text-transform: lowercase;*/
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: normal;
+	color: #ffffff;
+}
+
+h1 {
+	letter-spacing: -1px;
+	font-size: 220%;
+}
+
+h2 {
+	letter-spacing: -1px;
+}
+
+h3 {
+}
+
+p, ol, ul {
+	margin-bottom: 1.5em;
+	line-height: 1.5em;
+}
+
+ul, ol {
+	margin-left: 3em;
+}
+
+blockquote {
+	padding: 0 3em;
+	font-style: italic;
+}
+
+a:link {
+	text-decoration: none;
+	color: #cccccc;
+}
+
+img {
+	border: none;
+}
+
+img.left {
+	float: left;
+	margin: 0 15px 0 0;
+}
+
+img.right {
+	float: right;
+	margin: 0 0 0 15px;
+}
+
+form > select{
+	float: left;
+	margin-right: 10px;
+	background-color: #333333;
+	border: 1px solid #000000;
+	color: #FFFFFF;
+}
+
+input {
+	background-color: #333333;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+/* Header */
+
+#header {
+	width: 710px;
+	height: 200px;
+	margin: 0 auto;
+	padding: 0 25px 10px 25px;
+	background: #000000 url(images/football-pitch.jpg) no-repeat center top;
+	text-shadow: 
+	-1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+}
+
+#header h1 {
+	margin: 0;
+	padding: 88px 0 0 40px;
+	letter-spacing: -2px;
+	font-size: 66px;
+}
+
+#header h1 a {
+	color: #FFFFFF;
+}
+
+#header h2 {
+	margin: -10px 0 0 -13px;
+	padding: 0 0 0 175px;
+	letter-spacing: normal;
+	font: bold 14px Arial, Helvetica, sans-serif;
+	color: #EEEEEE;
+}
+
+#header #signin {
+	color: #FFFFFF;
+	padding: 0 0 0 640px;
+	font-size: 16px;
+}
+
+#header #editpro{
+	text-align: right;
+	font-size: 16px;
+	padding: 0 7px 0 0;
+}
+
+a:visited {
+	color:#CCCCCC;
+}
+a:hover {
+	color:#FFFFFF;
+}
+
+/* Page */
+
+#page {
+	width: 710px;
+	margin: 0 auto;
+	padding: 0 25px;
+	background: #000000 url(images/img02.gif) repeat-y center top;
+}
+
+/* Content */
+
+#content {
+	float: left;
+	width: 680px;
+	padding: 5px 0 0 5px;
+}
+
+.post {
+	width: 655px;
+	padding: 20px 0 0 20px;
+}
+
+.post h1, .post h2, .post h3 {
+}
+
+.post .title {
+	padding: 0 0 5px 0;
+	background: url(images/img08.gif) repeat-x left bottom;
+}
+
+.post .title span {
+	padding-right: 30px;
+	/*background: url(get picture of ball) no-repeat right center;*/
+}
+
+/* Table */
+tr {
+	width:680px;
+	height:400px;
+}
+
+td {
+	border: 1px solid #565736;
+	width: 230px;
+	height: 100px;
+	vertical-align:top;
+	background-color: #313313;
+	max-height:100px;
+	max-width: 220px;
+	overflow: auto;
+}
+td div.teams{
+	height:396px;
+	max-height:396px;
+	overflow: auto;
+}
+td div.article{
+	padding: 0 0 1px 0;
+	background: url(images/img08.gif) repeat-x left bottom;
+}
+
+td h1{
+	font-size:28px;
+}
+/* Footer */
+#footer {
+	width: 710px;
+	height: 25px;
+	margin: 0 auto;
+	padding: 0 25px 25px 25px;
+	background: #000000 url(images/img12.gif) no-repeat center top;
+}
+
+#footer p {
+	margin: 0;
+	padding: 14px 20px;
+	line-height: normal;
+	font-size: 77%;
+	color: #565736;
+}
+
+#footer a {
+	color: #565736;
+}
+
+#footer a:hover {
+	text-decoration: underline;
+}
+
+#legal {
+	float: left;
+}
+
+#links {
+	float: right;
+}
+
+
+/* scrollbar*/
+
+::-webkit-scrollbar{
+    width: 10px;
+    height: 10px;
+    padding-top: 40px;
+}
+
+::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
+    border: 1px solid black;
+    background: rgb(41,41,41);
+    border-radius: 10px;
+
+}
+::-webkit-scrollbar-thumb{
+    border-radius:10px;
+    height: 30px;
+    width: 8px;
+    border: 1px solid black;
+    background: rgb(111,111,111);
+    -webkit-box-shadow: 0 1px 1px rgb(0,0,0);
+    background: -webkit-linear-gradient(rgb(200,200,200), rgb(150,150,150));
+}
+
+::-webkit-scrollbar-track-piece {
+    height: 30px;
+    width: 30px;
+}

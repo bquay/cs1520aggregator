@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script src="funcs.js">//</script>
+	<title>FanCrawler</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link href="default.css" rel="stylesheet" type="text/css" />
+	<link rel="shortcut icon" href="images/ballIcon.png">
+</head>
+<body>
+<div id="header">
+	<h1><a href="index.html">FanCrawler</a></h1>
+	<h2>Follow Your Teams</h2>
+		<!--{% if login %}
+	<div id="signin"><a href="{{login}}">Sign In</a></div>
+		<!--{% else %}-->
+	<div id="signin"><a href="{{logout}}">Sign Out</a></div>
+	<div id="editpro"><a href="editPro.html">Edit Profile</a>: {{nickname}}</div>
+		<!--{% endif %}-->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h1 class="title"><span>Welcome to FanCrawler!</span></h1>
+			<img src="images/introPic.jpg" alt="" width="120" height="120" class="left" />
+			<p><strong>FanCrawler</strong> is a website that will allow you to follow all the action of your favorite teams! Just select the league and then the team below!<br><br>Currently only the American big four are implemented.</p>
+			<p>Add or remove as many teams as you like!</p>
+			<p>Select a League and then a Team:</p>
+			<input type="button" id="save" value="save" onclick="showResultsAll();"/>
+			<input type="button" id="addTeam" value="add" onclick="addTeam();"/>
+			<input type="button" id="removeTeam" value="remove" onclick="removeTeam();"/>
+			<br><br>
+			<form id = "search">
+				<select id="leagues1" onchange="createTeamsDropDown();">
+					<option disabled="disabled" selected="selected"></option>
+					<optgroup label="Professional">
+						<option value="mlb">MLB</option>
+						<option value="nba">NBA</option>
+						<option value="nfl">NFL</option>
+						<option value="nhl">NHL</option>
+					</optgroup>
+					<optgroup label="NCAA">
+						<option value="baseball">Baseball</option>
+						<option value="softball">Softball</option>
+						<option value="football">Football</option>
+						<option value="hockey">Hockey</option>
+						<option value="womens-basketball">Women's Basketball</option>
+						<option value="mens-basketball">Men's Basketball</option>
+					</optgroup>
+				</select>
+				<select id="teams1" style="display:none"></select>
+			</form>
+		</div>
+		<div class="post" id="results"></div>
+	</div>
+	<!-- end #content -->
+	<div style="clear: both;">&nbsp;</div>
+</div>
+<!-- end #page -->
+<div id="footer">
+	<p id="legal">Designed by Brendan Quay, Devon Broglie, Drew Winfield.</p>
+	<p id="links"><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
