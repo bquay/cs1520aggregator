@@ -10,6 +10,7 @@ def user_key(user_name=DEFAULT_USER_NAME):
 	
 class UserTeams(ndb.Model):
 	user = ndb.UserProperty()
+	league = ndb.StringProperty(indexed=False)
 	team = ndb.StringProperty(indexed=False)
 
 class ViewedArticles(ndb.Model):
