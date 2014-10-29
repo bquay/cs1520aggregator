@@ -31,7 +31,7 @@ class Site(ndb.Model):
 class Team(ndb.Model):
 	league = ndb.StringProperty()
 	name = ndb.StringProperty()
-	sites = ndb.StructuredProperty(Site, indexed=False)
+	sites = ndb.LocalStructuredProperty(Site, indexed=False, repeated=True)
 
 
 DEFAULT_ARTICLE_NAME = 'default_article'
@@ -50,9 +50,177 @@ def user_key(user_name=DEFAULT_USER_NAME):
 	"""creates a Datastore key for a User entity with user_name"""
 	return ndb.Key('User', user_name)
 	
+def search(league):
+
+    path = 'text_files/sports_sites/'
+    filename = 'sports_sites.txt'
+    sites = []
+    with open(path + filename) as f:
+        sites = f.readlines()
+  
+    for i, site in enumerate(sites):
+        sites[i] = site.strip()
+  
+    # figure out which league to look in
+    path = 'text_files/teams/'
+    match = False
+    files = os.listdir(path)
+    teams = []
+    team_sites = {}
+    for t in files:
+        if t[0] == '.':
+            break
+        if league in t:
+            with open(path + t) as f:
+                teams = f.readlines()
+            break
+    
+    for i in range(len(teams)):
+        teams[i] = teams[i].strip()
+    
+    i = 0
+    for team in teams:
+        team_sites[team] = get_team_links(sites, team, league)
+        i += 1
+        if i == 5:
+            break
+    
+    team_entity = ''
+    entity_found = False
+    info = []
+    
+    for team in team_sites:
+        entity_found = False
+        team_query = Team.query((Team.name == team), ancestor=team_key(DEFAULT_TEAM_NAME))
+        team_entity = team_query.fetch(1)
+        if len(team_entity) == 0:
+            team_entity = Team(parent=team_key(DEFAULT_TEAM_NAME))
+            team_entity.name = team
+            team_entity.league = league
+        else:
+            entity_found = True
+            team_entity = team_entity[0]
+        team_entity.sites = []
+        for site in team_sites[team]:
+            # put sites up
+            add_site = Site()
+            add_site.url = site
+            team_entity.sites.append(add_site)
+        team_entity.put()
+        info.append((team_entity, entity_found))        
+        
+    return info
+    
+def get_team_links(sites, team, league):
+
+    team = str(team)
+    # split team into location and mascot
+    if len(team.split(' ')) == 2:
+        location = team[:str.find(team, ' ')]
+        mascot = team[str.find(team, ' '):].strip()
+    else:
+        location = team[:str.find(team, ' ')]
+        location += ' ' + team[str.find(team, ' '):str.rfind(team, ' ')].strip()
+        mascot = team[str.rfind(team, ' '):].strip()
+   
+  
+    # lower case mascots and locations
+    location = location.lower()
+    mascot = mascot.lower()
+    links_dict = {}
+    # use urllib to get html
+    for site in sites:
+        url = site + '/' + league + '/teams'
+        data = ''
+        try:
+            f = urlopen(url)
+            #site = f.geturl()
+            data = f.read()
+        except HTTPException:
+            data = ''
+
+        # use bs to find some stuff
+        soup = BeautifulSoup(data)
+  
+        all_links = soup.find_all('a')
+        text = []
+        links_team_filter = []
+        the_link = ''
+        for link in all_links:
+            try:
+                if 'team' in str(link['href']):
+                    links_team_filter.append(link)
+            except (KeyError, UnicodeEncodeError):
+                pass
+    
+        # if the mascot is in the link text, then we want it
+        for link in links_team_filter:
+            try:
+                if mascot in str(link.text).lower():
+                    the_link = str(link['href'])
+            except (KeyError, UnicodeEncodeError):
+                pass
+
+        # if not found in previous step, look for location in link text
+        if the_link == '':
+            for link in links_team_filter:
+                try:
+                    if location in str(link.text).lower():
+                        the_link = str(link['href'])
+                except (KeyError, UnicodeEncodeError):
+                    pass
+            
+        # if the mascot is in the link text, then we want it
+        if the_link == '':
+            for link in all_links:
+                try:
+                    if mascot in str(link.text).lower():
+                        the_link = str(link['href'])
+                except (KeyError, UnicodeEncodeError):
+                     pass
+
+        # if not found in previous step, look for location in link text
+        if the_link == '':
+            for link in all_links:
+                try:
+                    if location in str(link.text).lower():
+                        the_link = str(link['href'])
+                except (KeyError, UnicodeEncodeError):
+                    pass
+            
+        # still none found? Well... look at the href values
+        # for mascot
+        if the_link == '':
+            for link in all_links:
+                try:
+                    if mascot in str(link['href']).lower():
+                        the_link = str(link['href'])
+                except (KeyError, UnicodeEncodeError):
+                    pass
+        # and then for location, with dashes replacing spaces
+        if the_link == '':
+            for link in all_links:
+                try:
+                    if location.replace(' ', '-') in str(link['href']).lower():
+                        the_link = str(link['href'])
+                except (KeyError, UnicodeEncodeError):
+                    pass
+              
+        links_dict[site] = str(the_link)
+    links = []
+    for entry in links_dict:
+        # link might already be absolute, don't add domain if that's the case
+        if '.com' in links_dict[entry]:
+            link_parts = links_dict[entry].split('.com')
+            links.append(entry + link_parts[1])
+        else:
+            links.append(entry + links_dict[entry])
+        
+    return links
+	
 class UserTeams(ndb.Model):
 	user = ndb.UserProperty()
-	teams = ndb.StructuredProperty(Team, repeated=True)
+	teams = ndb.LocalStructuredProperty(Team, repeated=True)
 
 class ViewedArticles(ndb.Model):
 	user = ndb.UserProperty()
@@ -423,179 +591,16 @@ class ChooseTeams(webapp2.RequestHandler):
 class GetNFLSites(webapp2.RequestHandler):
 
     def get(self):
-        self.search('nfl')
+        info = search('nfl')
 
     def post(self):
-        self.search('nfl')
-
-    def search(self, league):
-    
-        path = 'text_files/sports_sites/'
-        filename = 'sports_sites.txt'
-        sites = []
-        with open(path + filename) as f:
-            sites = f.readlines()
-      
-        for i, site in enumerate(sites):
-            sites[i] = site.strip()
-      
-        # figure out which league to look in
-        path = 'text_files/teams/'
-        match = False
-        files = os.listdir(path)
-        teams = []
-        team_sites = {}
-        for t in files:
-            if t[0] == '.':
-                break
-            if league in t:
-                with open(path + t) as f:
-                    teams = f.readlines()
-                break
-        
-        for i in range(len(teams)):
-            teams[i] = teams[i].strip()
-        
-        i = 0
-        for team in teams:
-            team_sites[team] = self.get_team_links(sites, team, league)
-            i += 1
-            if i == 3:
-                break
-        
-        team_entity = ''
-        
-        for team in team_sites:
-            team_query = Team.query((Team.name == team), ancestor=user_key(DEFAULT_TEAM_NAME))
-            team_entity = team_query.fetch(1)
-            if len(team_entity) == 0:
-                team_entity = Team(parent=user_key(DEFAULT_TEAM_NAME))
-                team_entity.name = team
-            else:
-                team_entity = team_entity[0]
-            for site in team_sites[team]:
-                # put sites up
-                parent=user_key(DEFAULT_USER_NAME)
-                add_site = Site()
-                add_site.url = site
-                team_entity.sites = []
-                team_entity.sites.append(add_site)
-            team_entity.put()
-        
-        
+        info = search('nfl')
         
         self.response.out.write('<html><body>')
         
-        self.response.out.write(str(team_entity))
+        self.response.out.write(str(info))
             
         self.response.out.write('</body></html>')
-      
-    def get_team_links(self, sites, team, league):
-    
-        team = str(team)
-        # split team into location and mascot
-        if len(team.split(' ')) == 2:
-            location = team[:str.find(team, ' ')]
-            mascot = team[str.find(team, ' '):].strip()
-        else:
-            location = team[:str.find(team, ' ')]
-            location += ' ' + team[str.find(team, ' '):str.rfind(team, ' ')].strip()
-            mascot = team[str.rfind(team, ' '):].strip()
-       
-      
-        # lower case mascots and locations
-        location = location.lower()
-        mascot = mascot.lower()
-        links_dict = {}
-        # use urllib to get html
-        for site in sites:
-            url = site + '/' + league + '/teams'
-            data = ''
-            try:
-                f = urlopen(url)
-                #site = f.geturl()
-                data = f.read()
-            except HTTPException:
-                data = ''
-    
-            # use bs to find some stuff
-            soup = BeautifulSoup(data)
-      
-            all_links = soup.find_all('a')
-            text = []
-            links_team_filter = []
-            the_link = ''
-            for link in all_links:
-                try:
-                    if 'team' in str(link['href']):
-                        links_team_filter.append(link)
-                except (KeyError, UnicodeEncodeError):
-                    pass
-        
-            # if the mascot is in the link text, then we want it
-            for link in links_team_filter:
-                try:
-                    if mascot in str(link.text).lower():
-                        the_link = str(link['href'])
-                except (KeyError, UnicodeEncodeError):
-                    pass
-
-            # if not found in previous step, look for location in link text
-            if the_link == '':
-                for link in links_team_filter:
-                    try:
-                        if location in str(link.text).lower():
-                            the_link = str(link['href'])
-                    except (KeyError, UnicodeEncodeError):
-                        pass
-                
-            # if the mascot is in the link text, then we want it
-            if the_link == '':
-                for link in all_links:
-                    try:
-                        if mascot in str(link.text).lower():
-                            the_link = str(link['href'])
-                    except (KeyError, UnicodeEncodeError):
-                         pass
-
-            # if not found in previous step, look for location in link text
-            if the_link == '':
-                for link in all_links:
-                    try:
-                        if location in str(link.text).lower():
-                            the_link = str(link['href'])
-                    except (KeyError, UnicodeEncodeError):
-                        pass
-                
-            # still none found? Well... look at the href values
-            # for mascot
-            if the_link == '':
-                for link in all_links:
-                    try:
-                        if mascot in str(link['href']).lower():
-                            the_link = str(link['href'])
-                    except (KeyError, UnicodeEncodeError):
-                        pass
-            # and then for location, with dashes replacing spaces
-            if the_link == '':
-                for link in all_links:
-                    try:
-                        if location.replace(' ', '-') in str(link['href']).lower():
-                            the_link = str(link['href'])
-                    except (KeyError, UnicodeEncodeError):
-                        pass
-                  
-            links_dict[site] = the_link
-        links = []
-        for entry in links_dict:
-            # link might already be absolute, don't add domain if that's the case
-            if '.com' in links_dict[entry]:
-                link_parts = links_dict[entry].split('.com')
-                links.append(entry + link_parts[1])
-            else:
-                links.append(entry + links_dict[entry])
-            
-        return links
         
 class GetNFLArticles(webapp2.RequestHandler):
 
