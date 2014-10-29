@@ -686,12 +686,34 @@ class GetNFLArticles(webapp2.RequestHandler):
             #articles += soup.find_all()
             
         return articles
+
+class AjaxTest(webapp2.RequestHandler):
+    def get(self):
+        render_template(self, 'ajaxTest.html', {})
+
+class TestJSON(webapp2.RequestHandler):
+    def post(self):
+        league = self.request.get('league')
+        json_file = 'templates/JSON/'
+        
+        if league == 'MLB' :
+            json_file = json_file + 'mlb-teams.json'
+        elif league == 'NBA':
+            json_file = json_file + 'nba-teams.json'
+        elif league == 'NFL':
+            json_file = json_file + 'nfl-teams.json'
+        elif league == 'NHL':
+            json_file = json_file + 'nhl-teams.json'
+        
+        render_template(self, json_file, {})
     
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/search', SearchQuery),
     ('/feed', Feed),
     ('/choose_teams', ChooseTeams),
+    ('/testAjax', AjaxTest),
+    ('/test_json', TestJSON),
     ('/getNFLSites', GetNFLSites),
     ('/getNFLSites', GetNBASites),
     ('/getNFLSites', GetNHLSites),
