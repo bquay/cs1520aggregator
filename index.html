@@ -30,28 +30,17 @@
 			<p>Try it now without registering!</p>
 			<p>Select a League and then a Team:</p>
 			<form id="search" method="post" action="search">
-			    <input type="button" id="submit-search" style="display:block" value="search" onclick="showResults();"/>
-			    <br>
 			    <input type="hidden" name="league" id="league" />
-				<select id="leagues1" onchange="createTeamsDropDown();">
+				<select id="leagues" onchange="createTeamsDropDown();">
 					<option disabled="disabled" selected="selected"></option>
-					<optgroup label="Professional">
-						<option value="mlb">MLB</option>
-						<option value="nba">NBA</option>
-						<option value="nfl">NFL</option>
-						<option value="nhl">NHL</option>
-					</optgroup>
-					<optgroup label="NCAA">
-						<option value="baseball">Baseball</option>
-						<option value="softball">Softball</option>
-						<option value="football">Football</option>
-						<option value="hockey">Hockey</option>
-						<option value="womens-basketball">Women's Basketball</option>
-						<option value="mens-basketball">Men's Basketball</option>
-					</optgroup>
+                    <option value="mlb">MLB</option>
+                    <option value="nba">NBA</option>
+                    <option value="nfl">NFL</option>
+                    <option value="nhl">NHL</option>
 				</select>
 				<input type="hidden" name="team" id="team" />
-				<select id="teams1" style="display:none"></select>
+				<select id="teams" style="display:none"></select>
+                <input type="button" style="display:block" value="search" onclick="setLeagueAndTeamAndSubmitForm(this.form);"/>
 			</form>
 		</div>
 	</div>

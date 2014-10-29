@@ -618,7 +618,7 @@ class GetNHLSites(webapp2.RequestHandler):
         self.response.out.write('<html><body>')
         self.response.out.write(str(info))
         self.response.out.write('</body></html>')
-class GetMLBLSites(webapp2.RequestHandler):
+class GetMLBSites(webapp2.RequestHandler):
     def get(self):
         info = search('mlb')
 
@@ -687,11 +687,7 @@ class GetNFLArticles(webapp2.RequestHandler):
             
         return articles
 
-class AjaxTest(webapp2.RequestHandler):
-    def get(self):
-        render_template(self, 'ajaxTest.html', {})
-
-class TestJSON(webapp2.RequestHandler):
+class GetTeams(webapp2.RequestHandler):
     def post(self):
         league = self.request.get('league')
         json_file = 'templates/JSON/'
@@ -712,14 +708,13 @@ app = webapp2.WSGIApplication([
     ('/search', SearchQuery),
     ('/feed', Feed),
     ('/choose_teams', ChooseTeams),
-    ('/testAjax', AjaxTest),
-    ('/test_json', TestJSON),
+    ('/teamsAjax', GetTeams),
     ('/getNFLSites', GetNFLSites),
-    ('/getNFLSites', GetNBASites),
-    ('/getNFLSites', GetNHLSites),
-    ('/getNFLSites', GetMLBSites),
-    ('/getNFLArticles', GetNFLArticles)
-    ('/getNFLArticles', GetNBAArticles)
-    ('/getNFLArticles', GetNHLArticles)
-    ('/getNFLArticles', GetMLBArticles)
+    ('/getNBASites', GetNBASites),
+    ('/getNHLSites', GetNHLSites),
+    ('/getMLBSites', GetMLBSites),
+    ('/getNFLArticles', GetNFLArticles),
+    ('/getNBAArticles', GetNFLArticles),
+    ('/getNHLArticles', GetNFLArticles),
+    ('/getMLBArticles', GetNFLArticles)
 ], debug=True)
