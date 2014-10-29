@@ -30,19 +30,17 @@
 			<p>Add or remove as many teams as you like!</p>
 			<p>Select a League and then a Team:</p>
 			<form id="addTeamFrom" method="post" action="choose_teams">
-				<input type="button" id="save" value="save" onClick="chooseTeams();"/>
+				<input type="button" id="save" value="save" onClick="setLeagueAndTeamAndSubmitForm(this.form);"/>
 				<input type="button" id="addTeams" value="add" onClick="addTeam();"/>
 				<input type="button" id="removeTeams" value="remove" onClick="removeTeam();"/>
 				<br><br>
 				<input type="hidden" name="league" id="league"/>
 				<select id="leagues" onchange="createTeamsDropDown();">
 					<option disabled="disabled" selected="selected"></option>
-					<optgroup label="Professional">
-						<option value="mlb">MLB</option>
-						<option value="nba">NBA</option>
-						<option value="nfl">NFL</option>
-						<option value="nhl">NHL</option>
-					</optgroup>
+                    <option value="mlb">MLB</option>
+                    <option value="nba">NBA</option>
+                    <option value="nfl">NFL</option>
+                    <option value="nhl">NHL</option>
 				</select>
 				<input type="hidden" name="team" id="team"/>
 				<select id="teams" style="display:none"></select>
