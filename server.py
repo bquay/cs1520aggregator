@@ -589,7 +589,6 @@ class ChooseTeams(webapp2.RequestHandler):
         
 # CRON JOBS
 class GetNFLSites(webapp2.RequestHandler):
-
     def get(self):
         info = search('nfl')
 
@@ -597,9 +596,37 @@ class GetNFLSites(webapp2.RequestHandler):
         info = search('nfl')
         
         self.response.out.write('<html><body>')
-        
         self.response.out.write(str(info))
-            
+        self.response.out.write('</body></html>')
+class GetNBASites(webapp2.RequestHandler):
+    def get(self):
+        info = search('nba')
+
+    def post(self):
+        info = search('nba')
+        
+        self.response.out.write('<html><body>')
+        self.response.out.write(str(info))
+        self.response.out.write('</body></html>')
+class GetNHLSites(webapp2.RequestHandler):
+    def get(self):
+        info = search('nhl')
+
+    def post(self):
+        info = search('nhl')
+        
+        self.response.out.write('<html><body>')
+        self.response.out.write(str(info))
+        self.response.out.write('</body></html>')
+class GetMLBLSites(webapp2.RequestHandler):
+    def get(self):
+        info = search('mlb')
+
+    def post(self):
+        info = search('mlb')
+        
+        self.response.out.write('<html><body>')
+        self.response.out.write(str(info))
         self.response.out.write('</body></html>')
         
 class GetNFLArticles(webapp2.RequestHandler):
@@ -666,5 +693,11 @@ app = webapp2.WSGIApplication([
     ('/feed', Feed),
     ('/choose_teams', ChooseTeams),
     ('/getNFLSites', GetNFLSites),
+    ('/getNFLSites', GetNBASites),
+    ('/getNFLSites', GetNHLSites),
+    ('/getNFLSites', GetMLBSites),
     ('/getNFLArticles', GetNFLArticles)
+    ('/getNFLArticles', GetNBAArticles)
+    ('/getNFLArticles', GetNHLArticles)
+    ('/getNFLArticles', GetMLBArticles)
 ], debug=True)

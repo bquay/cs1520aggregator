@@ -3,14 +3,23 @@ cron:
   url: /getNFLArticles
   schedule: every 8 hours
 - description: semi-daily data grab
-  url: /getNFLArticles
+  url: /getNBAArticles
   schedule: every 8 hours
 - description: semi-daily data grab
-  url: /getNFLArticles
+  url: /getNHLArticles
   schedule: every 8 hours
 - description: semi-daily data grab
-  url: /getNFLArticles
+  url: /getMLBArticles
   schedule: every 8 hours
 - description: weekly site update
   url: /getNFLSites
+  schedule: every monday 09:00
+- description: weekly site update
+  url: /getNHLSites
+  schedule: every monday 09:00
+- description: weekly site update
+  url: /getNBASites
+  schedule: every monday 09:00
+- description: weekly site update
+  url: /getMLBSites
   schedule: every monday 09:00
