@@ -185,6 +185,10 @@ var nbaTeams = [
             },
 			{
                 location: "Milwaukee",
+                mascot: "Bucks"
+            },
+            {
+                location: "Minnesota",
                 mascot: "Timberwolves"
             },
 			{

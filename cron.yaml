@@ -1,0 +1,16 @@
+cron:
+- description: semi-daily data grab
+  url: /getNFLArticles
+  schedule: every 8 hours
+- description: semi-daily data grab
+  url: /getNFLArticles
+  schedule: every 8 hours
+- description: semi-daily data grab
+  url: /getNFLArticles
+  schedule: every 8 hours
+- description: semi-daily data grab
+  url: /getNFLArticles
+  schedule: every 8 hours
+- description: weekly site update
+  url: /getNFLSites
+  schedule: every monday 09:00

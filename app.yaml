@@ -9,5 +9,32 @@ handlers:
   static_dir: css
 - url: /scripts
   static_dir: scripts
+  
+- url: /getNFLArticles
+  script: server.app
+  login: admin
+- url: /getNHLArticles
+  script: server.app
+  login: admin
+- url: /getNBAArticles
+  script: server.app
+  login: admin
+- url: /getMLBArticles
+  script: server.app
+  login: admin
+  
+- url: /getNFLSites
+  script: server.app
+  login: admin
+- url: /getNHLSites
+  script: server.app
+  login: admin
+- url: /getNBASites
+  script: server.app
+  login: admin
+- url: /getMLBSites
+  script: server.app
+  login: admin
+  
 - url: /.*
   script: server.app
