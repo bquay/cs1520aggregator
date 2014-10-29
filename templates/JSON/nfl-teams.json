@@ -1,0 +1,130 @@
+{"teams" : [
+    {
+        "location": "Arizona",
+        "mascot": "Cardinals"
+    },
+    {
+        "location": "Atlanta",
+        "mascot": "Falcons"
+    },
+    {
+        "location": "Baltimore",
+        "mascot": "Ravens"
+    },
+    {
+        "location": "Buffalo",
+        "mascot": "Bills"
+    },
+    {
+        "location": "Carolina",
+        "mascot": "Panthers"
+    },
+    {
+        "location": "Chicago",
+        "mascot": "Bears"
+    },
+    {
+        "location": "Cincinnati",
+        "mascot": "Bengals"
+    },
+    {
+        "location": "Cleveland",
+        "mascot": "Browns"
+    },
+    {
+        "location": "Dallas",
+        "mascot": "Cowboys"
+    },
+    {
+        "location": "Denver",
+        "mascot": "Broncos"
+    },
+    {
+        "location": "Detroit",
+        "mascot": "Lions"
+    },
+    {
+        "location": "Green Bay",
+        "mascot": "Packers"
+    },
+    {
+        "location": "Houston",
+        "mascot": "Texans"
+    },
+    {
+        "location": "Indianapolis",
+        "mascot": "Colts"
+    },
+    {
+        "location": "Jacksonville",
+        "mascot": "Jaguars"
+    },
+    {
+        "location": "Kansas City",
+        "mascot": "Chiefs"
+    },
+    {
+        "location": "Miami",
+        "mascot": "Dolphins"
+    },
+    {
+        "location": "Minnesota",
+        "mascot": "Vikings"
+    },
+    {
+        "location": "New England",
+        "mascot": "Patriots"
+    },
+    {
+        "location": "New Orleans",
+        "mascot": "Saints"
+    },
+    {
+        "location": "New York",
+        "mascot": "Giants"
+    },
+    {
+        "location": "New York",
+        "mascot": "Jets"
+    },
+    {
+        "location": "Oakland",
+        "mascot": "Raiders"
+    },
+    {
+        "location": "Philadelphia",
+        "mascot": "Eagles"
+    },
+    {
+        "location": "Pittsburgh",
+        "mascot": "Steelers"
+    },
+    {
+        "location": "Saint Louis",
+        "mascot": "Rams"
+    },
+    {
+        "location": "San Diego",
+        "mascot": "Chargers"
+    },
+    {
+        "location": "San Francisco",
+        "mascot": "49ers"
+    },
+    {
+        "location": "Seattle",
+        "mascot": "Seahawks"
+    },
+    {
+        "location": "Tampa Bay",
+        "mascot": "Buccaneers"
+    },
+    {
+        "location": "Tennessee",
+        "mascot": "Titans"
+    },
+    {
+        "location": "Washington",
+        "mascot": "Redskins"
+    }
+]}

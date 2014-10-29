@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>Testing out AJAX!</title>
+        <script>
+            function createXmlHttp() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                if (!(xmlhttp)) {
+                    alert("your horrible browser does not support AJAX, get with it man");
+                }
+                return xmlhttp;
+            }
+            
+            function postParameters(xmlHttp, target, parameters) {
+                if (xmlHttp) {
+                    xmlHttp.open("POST", target, true);
+                    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlHttp.send(parameters);
+                }
+            }
+            
+            function getTeamDropdown() {
+                var league = document.getElementById("leagues");
+                var leagueInput = leagues.options[leagues.selectedIndex].text;
+                
+                var xmlHttp = createXmlHttp();
+
+                // onreadystatechange will be called every time the state of the XML HTTP object changes
+                xmlHttp.onreadystatechange = function() {
+                    // we really only care about 4 (response complete) here.
+                    if (xmlHttp.readyState == 4) {
+                        var i = 0;
+                        // we parse the content of the response
+                        var json = JSON.parse(xmlHttp.responseText);
+                        var teams = json.teams;
+                        var teamsSelect = document.getElementById("teams");
+                        var teamsSelectHTML = '<option disabled="disabled" selected="selected"></option>';
+                        var option_str = '';
+                        
+                        while (teams[i] != null) {                        
+                            name = teams[i].location + ' ' + teams[i].mascot;
+                            option_str = '<option value="' + name +'">' + name + '</option>';
+                            console.log(option_str);
+                            teamsSelectHTML = teamsSelectHTML + option_str;
+                            i++;
+                        }
+                        
+                        teamsSelect.innerHTML = teamsSelectHTML;
+                        teamsSelect.style.display = 'block';
+                    }
+                }
+                postParameters(xmlHttp, '/test_json', 'league='+leagueInput);
+            }
+        </script>
+    </head>
+    <body>
+        <form id="search" method="post" action="search">
+            <input type="button" id="submit-search" style="display:block" value="search" onclick="showResults();"/>
+            <br>
+            <input type="hidden" name="league" id="league" />
+            <select id="leagues" onchange="getTeamDropdown();">
+                <option disabled="disabled" selected="selected"></option>                
+                <option value="mlb">MLB</option>
+                <option value="nba">NBA</option>
+                <option value="nfl">NFL</option>
+                <option value="nhl">NHL</option>
+            </select>
+            <input type="hidden" name="team" id="team" />
+            <select id="teams" style="display:none"></select>
+        </form>
+    </body>
+</html>

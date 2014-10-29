@@ -1,0 +1,122 @@
+{"teams" : [
+    {
+        "location": "Atlanta",
+        "mascot": "Hawks"
+    },
+    {
+        "location": "Boston",
+        "mascot": "Celtics"
+    },
+    {
+        "location": "Charlotte",
+        "mascot": "Hornets"
+    },
+    {
+        "location": "Chicago",
+        "mascot": "Bulls"
+    },
+    {
+        "location": "Cleveland",
+        "mascot": "Cavaliers"
+    },
+    {
+        "location": "Dallas",
+        "mascot": "Mavericks"
+    },
+    {
+        "location": "Denver",
+        "mascot": "Nuggets"
+    },
+    {
+        "location": "Detroit",
+        "mascot": "Pistons"
+    },
+    {
+        "location": "Golden State",
+        "mascot": "Warriors"
+    },
+    {
+        "location": "Houston",
+        "mascot": "Rockets"
+    },
+    {
+        "location": "Indiana",
+        "mascot": "Pacers"
+    },
+    {
+        "location": "LA",
+        "mascot": "Clippers"
+    },
+    {
+        "location": "LA",
+        "mascot": "Lakers"
+    },
+    {
+        "location": "Memphis",
+        "mascot": "Grizzlies"
+    },
+    {
+        "location": "Miami",
+        "mascot": "Heat"
+    },
+    {
+        "location": "Milwaukee",
+        "mascot": "Bucks"
+    },
+    {
+        "location": "Minnesota",
+        "mascot": "Timberwolves"
+    },
+    {
+        "location": "New Jersey",
+        "mascot": "Nets"
+    },
+    {
+        "location": "New Orleans",
+        "mascot": "Pelicans"
+    },
+    {
+        "location": "New York",
+        "mascot": "Knicks"
+    },
+    {
+        "location": "Oklahoma City",
+        "mascot": "Thunder"
+    },
+    {
+        "location": "Orlando",
+        "mascot": "Magic"
+    },
+    {
+        "location": "Philadelphia",
+        "mascot": "Sixers"
+    },
+    {
+        "location": "Phoenix",
+        "mascot": "Suns"
+    },
+    {
+        "location": "Portland",
+        "mascot": "Trail Blazers"
+    },
+    {
+        "location": "Sacramento",
+        "mascot": "Kings"
+    },
+    {
+        "location": "San Antonio",
+        "mascot": "Spurs"
+    },
+    {
+        "location": "Toronto",
+        "mascot": "Raptors"
+    },
+    {
+        "location": "Utah",
+        "mascot": "Jazz"
+    },
+    {
+        "location": "Washington",
+        "mascot": "Wizards"
+    }
+]}

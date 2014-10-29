@@ -9,6 +9,8 @@ handlers:
   static_dir: css
 - url: /scripts
   static_dir: scripts
+- url: /JSON
+  static_dir: JSON
   
 - url: /getNFLArticles
   script: server.app

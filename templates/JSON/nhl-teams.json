@@ -1,0 +1,122 @@
+{"teams" : [
+    {
+        "location": "Anaheim",
+        "mascot": "Ducks"
+    },
+    {
+        "location": "Atlanta",
+        "mascot": "Thrashers"
+    },
+    {
+        "location": "Boston",
+        "mascot": "Bruins"
+    },
+    {
+        "location": "Buffalo",
+        "mascot": "Sabres"
+    },
+    {
+        "location": "Calgary",
+        "mascot": "Flames"
+    },
+    {
+        "location": "Carolina",
+        "mascot": "Hurricanes"
+    },
+    {
+        "location": "Chicago",
+        "mascot": "Blackhawks"
+    },
+    {
+        "location": "Colorado",
+        "mascot": "Avalanche"
+    },
+    {
+        "location": "Columbus",
+        "mascot": "Blue Jackets"
+    },
+    {
+        "location": "Dallas",
+        "mascot": "Stars"
+    },
+    {
+        "location": "Detroit",
+        "mascot": "Red Wings"
+    },
+    {
+        "location": "Edmonton",
+        "mascot": "Oilers"
+    },
+    {
+        "location": "Florida",
+        "mascot": "Panthers"
+    },
+    {
+        "location": "Los Angeles",
+        "mascot": "Kings"
+    },
+    {
+        "location": "Minnesota",
+        "mascot": "Wild"
+    },
+    {
+        "location": "Montreal",
+        "mascot": "Canadiens"
+    },
+    {
+        "location": "Nashville",
+        "mascot": "Predators"
+    },
+    {
+        "location": "New Jersey",
+        "mascot": "Devils"
+    },
+    {
+        "location": "New York",
+        "mascot": "Islanders"
+    },
+    {
+        "location": "New York",
+        "mascot": "Rangers"
+    },
+    {
+        "location": "Ottawa",
+        "mascot": "Senators"
+    },
+    {
+        "location": "Philadelphia",
+        "mascot": "Flyers"
+    },
+    {
+        "location": "Phoenix",
+        "mascot": "Coyotes"
+    },
+    {
+        "location": "Pittsburgh",
+        "mascot": "Penguins"
+    },
+    {
+        "location": "Saint Louis",
+        "mascot": "Blues"
+    },
+    {
+        "location": "San Jose",
+        "mascot": "Sharks"
+    },
+    {
+        "location": "Tampa Bay",
+        "mascot": "Lightning"
+    },
+    {
+        "location": "Toronto",
+        "mascot": "Maple Leafs"
+    },
+    {
+        "location": "Vancouver",
+        "mascot": "Canucks"
+    },
+    {
+        "location": "Washington",
+        "mascot": "Capitals"
+    }
+]}
