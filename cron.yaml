@@ -1,25 +1,25 @@
 cron:
 - description: semi-daily data grab
   url: /getNFLArticles
-  schedule: every 8 hours
+  schedule: saturday 20:20
 - description: semi-daily data grab
   url: /getNBAArticles
-  schedule: every 8 hours
+  schedule: saturday 20:20
 - description: semi-daily data grab
   url: /getNHLArticles
-  schedule: every thursday 20:20
+  schedule: every saturday 20:20
 - description: semi-daily data grab
   url: /getMLBArticles
-  schedule: every thursday 18:50
+  schedule: every saturday 18:50
 - description: weekly site update
   url: /getNFLSites
-  schedule: every thursday 18:50
+  schedule: every saturday 18:50
 - description: weekly site update
   url: /getNHLSites
-  schedule: every thursday 01:25
+  schedule: every saturday 01:25
 - description: weekly site update
   url: /getNBASites
-  schedule: every thursday 01:25
+  schedule: every saturday 01:25
 - description: weekly site update
   url: /getMLBSites
-  schedule: every thursday 01:25
+  schedule: every saturday 01:25

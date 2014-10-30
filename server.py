@@ -414,7 +414,8 @@ class Feed(webapp2.RequestHandler):
             user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
             user = user_query.get()
             
-            for team, i in enumerate(user.teams) :
+            for i in enumerate(user.teams) :
+                team = user.teams[i]
                 if i == 0 :
                     given_team = team.name
                 user_teams.append(team.name)
@@ -462,7 +463,8 @@ class Feed(webapp2.RequestHandler):
             user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
             user = user_query.get()
             
-            for team, i in enumerate(user.teams) :
+            for i in enumerate(user.teams) :
+                team = user.teams[i]
                 user_teams.append(team.name)
             
             article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
@@ -527,9 +529,9 @@ class ChooseTeams(webapp2.RequestHandler):
         
         num = 0        
         while num < numTeams :
-            team = Team(parent=user_key(DEFAULT_USER_NAME))
+            team = UserTeam(parent=user_key(DEFAULT_USER_NAME))
             team.league = teams[num]
-            team.team = teams[num + 1]
+            team.name = teams[num + 1]
             
             user.teams.append(team)
             
