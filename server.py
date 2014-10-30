@@ -390,6 +390,7 @@ class SearchQuery(webapp2.RequestHandler):
             images = soup.find_all('img')
             for image in images:
                 if '.com' not in image['src']:
+                    image['src'] = image['data-defer-src']
                     images_stuff += str(image)
             self.response.out.write(images_stuff)
             #self.response.out.write(article.metadata)
