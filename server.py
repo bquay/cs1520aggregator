@@ -81,8 +81,8 @@ def search(league):
     i = 0
     for team in teams:
         team_sites[team] = get_team_links(sites, team, league)
-        i += 1
-        if i == 5:
+        #i += 1
+        if i == 4:
             break
     
     team_entity = ''
@@ -591,46 +591,47 @@ class ChooseTeams(webapp2.RequestHandler):
 class GetNFLSites(webapp2.RequestHandler):
     def get(self):
         info = search('nfl')
+        
+        self.response.out.write('<html><body>')
+        self.response.out.write(str(info))
+        self.response.out.write('</body></html>')
 
     def post(self):
         info = search('nfl')
         
-        self.response.out.write('<html><body>')
-        self.response.out.write(str(info))
-        self.response.out.write('</body></html>')
 class GetNBASites(webapp2.RequestHandler):
     def get(self):
         info = search('nba')
+        self.response.out.write('<html><body>')
+        self.response.out.write(str(info))
+        self.response.out.write('</body></html>')
 
     def post(self):
         info = search('nba')
         
-        self.response.out.write('<html><body>')
-        self.response.out.write(str(info))
-        self.response.out.write('</body></html>')
 class GetNHLSites(webapp2.RequestHandler):
     def get(self):
         info = search('nhl')
-
+        self.response.out.write('<html><body>')
+        self.response.out.write(str(info))
+        self.response.out.write('</body></html>')
     def post(self):
         info = search('nhl')
         
-        self.response.out.write('<html><body>')
-        self.response.out.write(str(info))
-        self.response.out.write('</body></html>')
 class GetMLBSites(webapp2.RequestHandler):
     def get(self):
         info = search('mlb')
-
-    def post(self):
-        info = search('mlb')
-        
         self.response.out.write('<html><body>')
         self.response.out.write(str(info))
         self.response.out.write('</body></html>')
-        
+    def post(self):
+        info = search('mlb')
+                
 class GetNFLArticles(webapp2.RequestHandler):
 
+    def get(self):
+        self.get(articles)
+        
     def get_articles(self, links):
     
         """

@@ -13,13 +13,13 @@ cron:
   schedule: every 8 hours
 - description: weekly site update
   url: /getNFLSites
-  schedule: every monday 09:00
+  schedule: every wednesday 21:20
 - description: weekly site update
   url: /getNHLSites
-  schedule: every monday 09:00
+  schedule: every wednesday 21:20
 - description: weekly site update
   url: /getNBASites
-  schedule: every monday 09:00
+  schedule: every wednesday 21:20
 - description: weekly site update
   url: /getMLBSites
-  schedule: every monday 09:00
+  schedule: every wednesday 21:20
