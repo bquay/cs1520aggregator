@@ -1,3 +1,8 @@
+function team(league, name) {
+    this.league = league;
+    this.name = name;
+}
+
 var userTeams = [];
 
 function createXmlHttp() {
