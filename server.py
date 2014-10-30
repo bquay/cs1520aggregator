@@ -322,7 +322,7 @@ class MainPage(webapp2.RequestHandler):
             logout_url = users.create_logout_url('/')
             name = user.nickname()
             """ check to see if they have chosen teams """
-            user_query = UserTeams.query((UserTeams.user == user), ancestor=user_key(DEFAULT_USER_NAME))
+            user_query = User.query((User.user == user), ancestor=user_key(DEFAULT_USER_NAME))
             user_entry = user_query.fetch(1)
 
             if (user_entry):
