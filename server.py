@@ -381,12 +381,18 @@ class SearchQuery(webapp2.RequestHandler):
         f.close()
         
         #render_template(self, 'search.html', template_values)      
-          
+        images_stuff = ''
         self.response.out.write(header)
         
         for article in article_list:
             self.response.out.write('<div class="post">')
-            self.response.out.write(article.metadata)
+            soup = BeautifulSoup(article.metadata)
+            images = soup.find_all('img')
+            for image in images:
+                if '.com' not in image['src']:
+                    images_stuff += str(image)
+            self.response.out.write(images_stuff)
+            #self.response.out.write(article.metadata)
             self.response.out.write('</div>')
             self.response.out.write('<br>')
             
