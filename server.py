@@ -397,6 +397,8 @@ class Feed(webapp2.RequestHandler):
         
         name = ''
         
+        myresponse = ''
+        
         if curr_user:
             logout_url = users.create_logout_url('/')
             name = curr_user.nickname()
@@ -504,22 +506,25 @@ class ChooseTeams(webapp2.RequestHandler):
     
     def post(self):
         teams_str = self.request.get("teamsToAdd")
+        teams_str = teams_str[:-1]
         
-        teams = teams_str.split( )
+        teams = teams_str.split('-')
         numTeams = len(teams) / 2
         
-        num = 0
+        user = UserTeams(parent=user_key(DEFAULT_USER_NAME))
+        user.user = users.get_current_user()
         
+        num = 0        
         while num < numTeams :
-            userTeam = UserTeams(parent=user_key(DEFAULT_USER_NAME))
+            team = Team(parent=user_key(DEFAULT_USER_NAME))
+            team.league = teams[num]
+            team.team = teams[num + 1]
             
-            userTeam.user = users.get_current_user()
-            userTeam.league = teams[num]
-            userTeam.team = teams[num + 1]
-            
-            userTeam.put()
+            user.teams.append(team)
             
             num = num + 2
+        
+        user.put()
         
         self.redirect('/feed')
         

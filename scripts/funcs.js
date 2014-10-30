@@ -67,7 +67,7 @@ function addTeam() {
 	var teams = document.getElementById('teams');
 	var teamInput = teams.options[teams.selectedIndex].text;
 
-	var newTeam = leagueInput + " " + teamInput;
+	var newTeam = leagueInput + "-" + teamInput;
 	
 	if(userTeams.indexOf(newTeam) <= -1){
 		userTeams.push(newTeam);
@@ -103,7 +103,7 @@ function saveTeams(form) {
     
 	var team;
 	for(team in userTeams){
-		teamsStr = teamsStr + userTeams[team] + " ";
+		teamsStr = teamsStr + userTeams[team] + "-";
 	}
     
     teamsToAdd.value = teamsStr;
