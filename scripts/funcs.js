@@ -79,6 +79,9 @@ function addTeam() {
     
     teams.style.display = "none";
     teams.innerHTML = "";
+    
+    leagues.selectedIndex = leagues.options[0];
+    
 	displayTeams.innerHTML = stringTeam;
 }
 
