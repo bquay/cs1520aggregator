@@ -427,6 +427,7 @@ class Feed(webapp2.RequestHandler):
           
         else:
             login_url = users.create_login_url('/')
+            self.redirect('/')
           
         template_values = {
             'login' : login_url,
@@ -472,6 +473,7 @@ class Feed(webapp2.RequestHandler):
           
         else:
             login_url = users.create_login_url('/')
+            
           
         template_values = {
             'login' : login_url,
@@ -502,6 +504,7 @@ class ChooseTeams(webapp2.RequestHandler):
           
         else:
             login_url = users.create_login_url('/')
+            self.redirect('/')
           
         template_values = {
             'login' : login_url,
