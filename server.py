@@ -414,8 +414,7 @@ class Feed(webapp2.RequestHandler):
             user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
             user = user_query.get()
             
-            for i in enumerate(user.teams) :
-                team = user.teams[i]
+            for i, team in enumerate(user.teams) :
                 if i == 0 :
                     given_team = team.name
                 user_teams.append(team.name)
@@ -463,7 +462,7 @@ class Feed(webapp2.RequestHandler):
             user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
             user = user_query.get()
             
-            for i in enumerate(user.teams) :
+            for i, team in enumerate(user.teams) :
                 team = user.teams[i]
                 user_teams.append(team.name)
             

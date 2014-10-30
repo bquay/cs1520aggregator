@@ -1,10 +1,10 @@
 cron:
 - description: semi-daily data grab
   url: /getNFLArticles
-  schedule: saturday 20:20
+  schedule: every saturday 20:20
 - description: semi-daily data grab
   url: /getNBAArticles
-  schedule: saturday 20:20
+  schedule: every saturday 20:20
 - description: semi-daily data grab
   url: /getNHLArticles
   schedule: every saturday 20:20
