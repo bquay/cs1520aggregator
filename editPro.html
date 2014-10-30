@@ -30,7 +30,8 @@
 			<p>Add or remove as many teams as you like!</p>
 			<p>Select a League and then a Team:</p>
 			<form id="addTeamFrom" method="post" action="choose_teams">
-				<input type="button" id="save" value="save" onClick="setLeagueAndTeamAndSubmitForm(this.form);"/>
+                <input type="hidden" id="teamsToAdd" name="teamsToAdd" />
+				<input type="button" id="save" value="save" onClick="saveTeams(this.form);"/>
 				<input type="button" id="addTeams" value="add" onClick="addTeam();"/>
 				<input type="button" id="removeTeams" value="remove" onClick="removeTeam();"/>
 				<br><br>

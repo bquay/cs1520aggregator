@@ -76,6 +76,9 @@ function addTeam() {
 	for(oldTeam in userTeams){
 		stringTeam = stringTeam + userTeams[oldTeam] + "<br>";
 	}
+    
+    teams.style.display = "none";
+    teams.innerHTML = "";
 	displayTeams.innerHTML = stringTeam;
 }
 
@@ -91,6 +94,21 @@ function removeTeam(){
 		stringTeam = stringTeam + userTeams[oldTeam] + "<br>";
 	}
 	displayTeams.innerHTML = stringTeam;
+}
+
+function saveTeams(form) {
+    var teamsToAdd = document.getElementById('teamsToAdd');
+    
+    var teamsStr = "";
+    
+	var team;
+	for(team in userTeams){
+		teamsStr = teamsStr + userTeams[team] + " ";
+	}
+    
+    teamsToAdd.value = teamsStr;
+    
+    form.submit();
 }
 
 function setLeagueAndTeamAndSubmitForm(form) {

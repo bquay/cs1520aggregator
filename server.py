@@ -385,22 +385,35 @@ class SearchQuery(webapp2.RequestHandler):
 class Feed(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-type'] = 'text/html'
-
-        filename = 'userPro.html'
         
-        f = open(filename, 'r')
-        myresponse = f.read()
+        given_team = ''
+        user_teams = []
+        articles = []
         
-        user = users.get_current_user()
+        curr_user = users.get_current_user()
         
         login_url = ''
         logout_url = ''
         
         name = ''
         
-        if user:
+        if curr_user:
             logout_url = users.create_logout_url('/')
-            name = user.nickname()
+            name = curr_user.nickname()
+            
+            user_query = UserTeams.query((UserTeams.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
+            user = user_query.get()
+            
+            for team, i in enumerate(user.teams) :
+                if i == 0 :
+                    given_team = team
+                user_teams.append(team)
+            
+            article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
+            article_objects = article_query.fetch(20)
+            
+            for article in article_objects :
+                articles.append(article.metadata)                
           
         else:
             login_url = users.create_login_url('/')
@@ -408,20 +421,63 @@ class Feed(webapp2.RequestHandler):
         template_values = {
             'login' : login_url,
             'logout' : logout_url,
-            'nickname' : name
-        }
-        
+            'nickname' : name,
+            'given_team' : given_team,
+            'user_teams' : user_teams,
+            'articles' : articles
+        }        
         
         render_template(self, 'userPro.html', template_values)
+        
+    def post(self):
+        self.response.headers['Content-type'] = 'text/html'
+        
+        given_team = self.request.get('team')
+        
+        user_teams = []
+        articles = []
+        
+        curr_user = users.get_current_user()
+        
+        login_url = ''
+        logout_url = ''
+        
+        name = ''
+        
+        if curr_user:
+            logout_url = users.create_logout_url('/')
+            name = curr_user.nickname()
+            
+            user_query = UserTeams.query((UserTeams.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
+            user = user_query.fetch(1)
+            
+            for team, i in enumerate(user.teams) :
+                user_teams.append(team)
+            
+            article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
+            article_objects = article_query.fetch(20)
+            
+            for article in article_objects :
+                articles.append(article.metadata)                
+          
+        else:
+            login_url = users.create_login_url('/')
+          
+        template_values = {
+            'login' : login_url,
+            'logout' : logout_url,
+            'nickname' : name,
+            'given_team' : given_team,
+            'user_teams' : user_teams,
+            'articles' : articles
+        }        
+        
+        render_template(self, 'userPro.html', template_values)
+    
 
 class ChooseTeams(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-type'] = 'text/html'
-
-        filename = 'editPro.html'
-        
-        f = open(filename, 'r')
-        myresponse = f.read()
         
         user = users.get_current_user()
         
@@ -447,16 +503,23 @@ class ChooseTeams(webapp2.RequestHandler):
         render_template(self, 'editPro.html', template_values)
     
     def post(self):
-        team = self.request.get("team")
-        league = self.request.get("league")
+        teams_str = self.request.get("teamsToAdd")
         
-        userTeam = UserTeams(parent=user_key(DEFAULT_USER_NAME))
+        teams = teams_str.split( )
+        numTeams = len(teams) / 2
         
-        userTeam.user = users.get_current_user()
-        userTeam.league = league
-        userTeam.team = team
+        num = 0
         
-        userTeam.put()
+        while num < numTeams :
+            userTeam = UserTeams(parent=user_key(DEFAULT_USER_NAME))
+            
+            userTeam.user = users.get_current_user()
+            userTeam.league = teams[num]
+            userTeam.team = teams[num + 1]
+            
+            userTeam.put()
+            
+            num = num + 2
         
         self.redirect('/feed')
         
