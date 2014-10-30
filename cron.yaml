@@ -7,13 +7,13 @@ cron:
   schedule: every 8 hours
 - description: semi-daily data grab
   url: /getNHLArticles
-  schedule: every 8 hours
+  schedule: every thursday 20:20
 - description: semi-daily data grab
   url: /getMLBArticles
-  schedule: every 8 hours
+  schedule: every thursday 18:50
 - description: weekly site update
   url: /getNFLSites
-  schedule: every thursday 01:25
+  schedule: every thursday 18:50
 - description: weekly site update
   url: /getNHLSites
   schedule: every thursday 01:25

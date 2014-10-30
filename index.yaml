@@ -1,0 +1,7 @@
+indexes:
+- kind: Article
+  ancestor: yes
+  properties:
+  - name: team
+  - name: date
+    direction: asc

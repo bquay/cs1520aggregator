@@ -40,7 +40,7 @@ def article_key(article_name=DEFAULT_ARTICLE_NAME):
     return ndb.Key('Article', article_name)
 
 class Article(ndb.Model):
-    metadata = ndb.StringProperty(indexed=False)
+    metadata = ndb.TextProperty(indexed=False)
     team = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
     
@@ -296,6 +296,7 @@ def get_articles(league):
         
     articles_query = Article.query(ancestor=article_key(DEFAULT_ARTICLE_NAME))
     article_list = articles_query.fetch(None)
+    return testing
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -352,6 +353,7 @@ class SearchQuery(webapp2.RequestHandler):
         league = self.request.get("league")
         league = league.lower()        
       
+        #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
         articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
         article_list = articles_query.fetch(20)
       
@@ -377,7 +379,9 @@ class SearchQuery(webapp2.RequestHandler):
         self.response.out.write(header)
         
         for article in article_list:
+            self.response.out.write('<div class="post">')
             self.response.out.write(article.metadata)
+            self.response.out.write('</div>')
             self.response.out.write('<br>')
             
         self.response.out.write(footer)
@@ -612,10 +616,10 @@ class GetNHLArticles(webapp2.RequestHandler):
 class GetMLBArticles(webapp2.RequestHandler):
 
     def get(self):
-        get_articles('mlb')
+        testing = get_articles('mlb')
         #"""
         self.response.out.write('<html><body>')
-        self.response.out.write(str(article_list))
+        self.response.out.write(str(testing))
         self.response.out.write('</body></html>')
         #"""
     def post(self):
