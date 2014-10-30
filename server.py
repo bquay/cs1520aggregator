@@ -2,7 +2,7 @@ import webapp2
 from google.appengine.ext import db
 from httplib import *
 from urllib import urlopen
-from HTMLParser import HTMLParser
+import HTMLParser
 import re
 from threading import Thread
 import Queue
@@ -13,6 +13,8 @@ from google.appengine.ext import ndb
 import os
 
 q = Queue.Queue()
+
+parser = HTMLParser.HTMLParser()
 
 def render_template(handler, templatename, templatevalues):
     path = os.path.join(os.path.dirname(__file__), templatename)
@@ -423,7 +425,7 @@ class Feed(webapp2.RequestHandler):
             article_objects = article_query.fetch(20)
             
             for article in article_objects :
-                articles.append(article.metadata)                
+                articles.append(parser.unescape(article.metadata))                
           
         else:
             login_url = users.create_login_url('/')
@@ -470,7 +472,7 @@ class Feed(webapp2.RequestHandler):
             article_objects = article_query.fetch(20)
             
             for article in article_objects :
-                articles.append(article.metadata)                
+                articles.append(parser.unescape(article.metadata))                 
           
         else:
             login_url = users.create_login_url('/')
