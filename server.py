@@ -50,9 +50,13 @@ def user_key(user_name=DEFAULT_USER_NAME):
 	"""creates a Datastore key for a User entity with user_name"""
 	return ndb.Key('User', user_name)
 	
-class UserTeams(ndb.Model):
+class UserTeam(ndb.Model):
+    league = ndb.StringProperty(indexed=False)
+    name = ndb.StringProperty()
+
+class User(ndb.Model):
 	user = ndb.UserProperty()
-	teams = ndb.LocalStructuredProperty(Team, repeated=True)
+	teams = ndb.LocalStructuredProperty(UserTeam, repeated=True)
 
 class ViewedArticles(ndb.Model):
 	user = ndb.UserProperty()
@@ -407,13 +411,13 @@ class Feed(webapp2.RequestHandler):
             logout_url = users.create_logout_url('/')
             name = curr_user.nickname()
             
-            user_query = UserTeams.query((UserTeams.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
+            user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
             user = user_query.get()
             
             for team, i in enumerate(user.teams) :
                 if i == 0 :
-                    given_team = team
-                user_teams.append(team)
+                    given_team = team.name
+                user_teams.append(team.name)
             
             article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
             article_objects = article_query.fetch(20)
@@ -454,11 +458,11 @@ class Feed(webapp2.RequestHandler):
             logout_url = users.create_logout_url('/')
             name = curr_user.nickname()
             
-            user_query = UserTeams.query((UserTeams.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
-            user = user_query.fetch(1)
+            user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
+            user = user_query.get()
             
             for team, i in enumerate(user.teams) :
-                user_teams.append(team)
+                user_teams.append(team.name)
             
             article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
             article_objects = article_query.fetch(20)
@@ -515,7 +519,7 @@ class ChooseTeams(webapp2.RequestHandler):
         teams = teams_str.split('-')
         numTeams = len(teams) / 2
         
-        user = UserTeams(parent=user_key(DEFAULT_USER_NAME))
+        user = User(parent=user_key(DEFAULT_USER_NAME))
         user.user = users.get_current_user()
         
         num = 0        
@@ -531,6 +535,7 @@ class ChooseTeams(webapp2.RequestHandler):
         user.put()
         
         self.redirect('/feed')
+        
         
 #--------------------------- CRON JOBS ----------------------------#
 class GetNFLSites(webapp2.RequestHandler):
