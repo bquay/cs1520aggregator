@@ -94,12 +94,18 @@ function removeTeam(){
 }
 
 function setLeagueAndTeamAndSubmitForm(form) {
-    //var formElement = document.getElementById(form.name);
-    
     var leagues = document.getElementById('leagues');
     var leagueInput = document.getElementById('league');
 	leagueInput.value = leagues.options[leagues.selectedIndex].text;
 	
+	var teams = document.getElementById('teams');
+	var teamInput = document.getElementById('team');
+	teamInput.value = teams.options[teams.selectedIndex].text;
+	
+	form.submit();
+}
+
+function changeFeed(form) {
 	var teams = document.getElementById('teams');
 	var teamInput = document.getElementById('team');
 	teamInput.value = teams.options[teams.selectedIndex].text;

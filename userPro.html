@@ -13,69 +13,35 @@
 <div id="header">
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2>
-		<!--{% if login %}
+		{% if login %}
 	<div id="signin"><a href="{{login}}">Sign In</a></div>
-		<!--{% else %}-->
+		{% else %}
 	<div id="signin"><a href="{{logout}}">Sign Out</a></div>
 	<div id="editpro"><a href="">Edit Profile</a>: {{nickname}}</div>
-		<!--{% endif %}-->
+		{% endif %}
 </div>
 <!-- end #header -->
 <div id="page">
 	<div id="content">
 		<div class="post">
 			<h1 class="title"><span>Welcome {{nickname}}</span></h1>
-			<table id="feeds">
-				<tr>
-					<td>sdf</td>
-					<td>sdf</td>
-					<td>sssss</td>
-				</tr>
-				<tr>
-					<td>sdfsdfsdf,kjdhfkhjsdldkjfhsjkdhfl</td>
-					<td>sdfgsfdgsdfg sdfg sdfg sdfg sdf</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td><div class="teams" id="teamnamehere">
-					<h1>Milwualkee TimberWolves</h1>
-					<a href="article.html"><div class="article" id="article1">
-						<h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p>
-					</div></a>
-					<div class="article" id="article1">
-						<a href="article"><h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p></a>
-					</div>
-					<div class="article" id="article1">
-						<a href="article"><h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p></a>
-					</div>
-					<div class="article" id="article1">
-						<a href="article"><h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p></a>
-					</div>
-					<div class="article" id="article1">
-						<a href="article"><h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p></a>
-					</div>
-					<div class="article" id="article1">
-						<a href="article"><h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p></a>
-					</div>
-					<div class="article" id="article1">
-						<a href="article"><h2>Title Goes Here!!</h2>
-						<p>Description goes here. This could be super long or not long at all yo.</p></a>
-					</div>
-					</div></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+			<form id="teamFeed" method="post" action="feed">
+			    <input type="hidden" name="team" id="team" />
+				<select id="teams">
+                    <option selected="selected" value="{{given_team}}">{{given_team}}</option>
+					{% for team in user_teams %}
+						{% if team != given_team %}
+							<option value="{{team}}">{{team}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+                <input type="button" style="display:block" value=" go " onclick="changeFeed(this.form);"/>
+			</form>	
+			<div>
+				{% for article in articles %}
+					{{article}}<br>
+				{% endfor %}
+			</div>
 		</div>
 	</div>
 	<!-- end #content -->

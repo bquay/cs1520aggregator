@@ -11,7 +11,14 @@ body {
 	font-size: 13px;
 	color: #cccccc;
 }
-
+div img{
+	max-height: 200px;
+	max-width: 200px;
+}
+div.img{
+	max-height:;
+	max-width:;
+}
 h1, h2, h3 {
 	margin-bottom: 15px;
 	/*text-transform: lowercase;*/
