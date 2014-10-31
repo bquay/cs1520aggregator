@@ -503,8 +503,17 @@ class ChooseTeams(webapp2.RequestHandler):
         name = ''
         
         if user:
-            logout_url = users.create_logout_url('/')
-            name = user.nickname()
+            user_query = User.query((User.user == user), ancestor=user_key(DEFAULT_USER_NAME))
+            user_db = user_query.get()
+            
+            if user_db == None:
+                logout_url = users.create_logout_url('/')
+                name = user.nickname()
+                
+                user_db = User(parent=user_key(DEFAULT_USER_NAME))
+                user_db.user = user
+                user_db.teams = []
+                user_db.put()
           
         else:
             login_url = users.create_login_url('/')
@@ -522,15 +531,18 @@ class ChooseTeams(webapp2.RequestHandler):
     def post(self):
         teams_str = self.request.get("teamsToAdd")
         teams_str = teams_str[:-1]
-        
         teams = teams_str.split('-')
-        numTeams = len(teams) / 2
         
-        user = User(parent=user_key(DEFAULT_USER_NAME))
-        user.user = users.get_current_user()
+        curr_user = users.get_current_user()
+        
+        user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
+        user = user_query.get()
+        
+        if user == None:
+            user = User(parent=user_key(DEFAULT_USER_NAME))
         
         num = 0        
-        while num < numTeams :
+        while num < len(teams) :
             team = UserTeam(parent=user_key(DEFAULT_USER_NAME))
             team.league = teams[num]
             team.name = teams[num + 1]
@@ -540,7 +552,6 @@ class ChooseTeams(webapp2.RequestHandler):
             num = num + 2
         
         user.put()
-        
         self.redirect('/feed')
         
         
