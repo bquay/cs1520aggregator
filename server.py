@@ -246,7 +246,7 @@ def get_articles(league):
 
     """
     article_classes = {'espn': 'result', 'si': 'list-item', 'bleacherreport': 'block-list_item'}
-    articles = []
+    article_list = []
     team_query = Team.query((Team.league == league), ancestor=team_key(DEFAULT_TEAM_NAME))
     team_entity = team_query.fetch(None)
 
@@ -289,20 +289,120 @@ def get_articles(league):
                             article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
                             article.metadata = str(tag)
                             article.team = team.name
-                            article.put()
+                            # check if we already put in datastore
+                            # if we did, then don't put again
+                            # if we haven't, the put
+                            #article.put()
+                            # ------- Test code --------- #
+                            new_tag = normalize_article(tag)
+                            if new_tag is not None:
+                                article_list.append(new_tag)
                     elif 'bleacherreport' in link:
                         if article_class in class_val:
                             # add article to data store
                             article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
                             article.metadata = str(tag)
                             article.team = team.name
-                            article.put()
+                            # check if we already put in datastore
+                            # if we did, then don't put again
+                            # if we haven't, the put
+                            #article.put()
+                            # ------- Test code --------- #
+                            new_tag = normalize_article(tag)
+                            if new_tag is not None:
+                                article_list.append(new_tag)
+                    
                 except (KeyError, UnicodeDecodeError):
                     pass
+                
+            #break
+        break
+    #articles_query = Article.query(ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
+    #article_list = articles_query.fetch(10)
+    return article_list
+    
+def normalize_article(tag):
+    tag.name = 'div'
+    tag['class'] = 'post'
+    tag_soup = BeautifulSoup(str(tag))
+    link_tag = ''
+    # get a link (hopefully the article link)
+    for sub_tag in tag_soup.find_all(True):
+        if sub_tag.name == 'a':
+            link_tag = sub_tag
+            break
+    try:
+        if len(str(link_tag['href']).strip()) == 0:
+            return None
+        # until we figure out what to do with tweets, don't store them
+        if 'twitter' in str(link_tag['href']):
+            return None
+    except KeyError:
+        return None
+    # make sure link opens in new tab
+    link_tag['target'] = '_blank'
         
-    articles_query = Article.query(ancestor=article_key(DEFAULT_ARTICLE_NAME))
-    article_list = articles_query.fetch(None)
-    return testing
+    headline = unicode()
+    image = ''
+    try:
+        # link
+        #link_tag = tag.find_all('a')[0]
+        # headline
+        text_tags = tag.find_all(has_text)
+        text_list = []
+        for text_tag in text_tags:
+            text_list.append(text_tag.string)
+            #headline += text_tag.string
+        text_list = sorted(text_list, key=len, reverse=True)
+        i = 1
+        headline = text_list[0]
+        while len(headline) > 123:
+            headline = text_list[i]
+            i += 1
+        
+        # image
+        image = tag_soup.find('img')
+        if image is None:
+            image = ''
+        # need to extract deferred image loading link
+        # then fix link so it works (width and height params screw everything up)
+        try:
+            image['src'] = image['data-defer-src']
+            image['class'] = 'post-image'
+        except (KeyError, TypeError):
+            # either this is N/A (KeyError)
+            # or there was no img tag so image is None (TypeError)
+            pass
+        
+    except IndexError:
+        pass
+    # create new html (wrap link, headline, image in div)
+    # if link is a tweet maybe put in different class of div?
+    link_tag.string = headline
+    new_tag = unicode('<div class="post">')
+    new_tag += unicode(image)
+    new_tag += unicode(link_tag)
+    #new_tag += unicode('<br>')
+    #new_tag += headline
+    #new_tag += unicode(image)
+    new_tag += unicode('</div>')
+    
+    #probably should just store link_tag and image
+    # then we can construct the stuff later
+    # and maybe store headline separately?
+    
+    # Article consists of:
+    #   headline
+    #   link
+    #   image
+    #   source (BR, ESPN, etc)
+    #   team
+    #   id (hashed something... link?)
+    
+    return new_tag
+
+def has_text(tag):
+    return tag.string is not None
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -603,12 +703,13 @@ class GetMLBSites(webapp2.RequestHandler):
 class GetNFLArticles(webapp2.RequestHandler):
 
     def get(self):
-        get_articles('nfl')
-        """
+        article_list = get_articles('nfl')
+        #"""
         self.response.out.write('<html><body>')
-        self.response.out.write(str(article_list))
+        for article in article_list:
+            self.response.out.write(article)
         self.response.out.write('</body></html>')
-        """
+        #"""
         
     def post(self):
         get_articles('nfl')      

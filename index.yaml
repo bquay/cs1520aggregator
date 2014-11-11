@@ -4,4 +4,4 @@ indexes:
   properties:
   - name: team
   - name: date
-    direction: asc
+    direction: desc
