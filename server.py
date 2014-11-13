@@ -42,9 +42,20 @@ def article_key(article_name=DEFAULT_ARTICLE_NAME):
     return ndb.Key('Article', article_name)
 
 class Article(ndb.Model):
-    metadata = ndb.TextProperty(indexed=False)
+    headline = ndb.StringProperty(indexed=False)
+    link = ndb.StringProperty()
+    image = ndb.StringProperty(indexed=False)
+    image_citation = ndb.StringProperty(indexed=False)
+    source = ndb.StringProperty()
     team = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
+    
+    # Article consists of:
+    #   headline
+    #   link
+    #   image
+    #   source (BR, ESPN, etc)
+    #   team
     
 DEFAULT_USER_NAME = 'default_user'
 
@@ -282,36 +293,45 @@ def get_articles(league):
             for tag in soup.find_all(True):
                 try:
                     class_val = tag['class']
+                    # article_info = [headline, link_url, image_url, image_cite]
+                    article_info = []
                     #articles.append((class_val, len(class_val)))
                     if len(class_val) == 1:
                         if article_class in class_val:
-                            # add article to data store
-                            article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
-                            article.metadata = str(tag)
-                            article.team = team.name
-                            # check if we already put in datastore
-                            # if we did, then don't put again
-                            # if we haven't, the put
-                            #article.put()
-                            # ------- Test code --------- #
-                            new_tag = normalize_article(tag)
-                            if new_tag is not None:
-                                article_list.append(new_tag)
+                            article_info = normalize_article(tag)
+                            if article_info[2] is not '':
+                                # check if we already put in datastore
+                                # if we did, then don't put again
+                                # if we haven't, the put
+                                article_list.append(article_info)
+            
+                                article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
+                                article.headline = article_info[0]
+                                article.link = article_info[1]
+                                article.image = article_info[2]
+                                article.image_citation = article_info[3]
+                                article.source = domain
+                                article.team = team.name
+
+                                article.put()
                     elif 'bleacherreport' in link:
                         if article_class in class_val:
-                            # add article to data store
-                            article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
-                            article.metadata = str(tag)
-                            article.team = team.name
-                            # check if we already put in datastore
-                            # if we did, then don't put again
-                            # if we haven't, the put
-                            #article.put()
-                            # ------- Test code --------- #
-                            new_tag = normalize_article(tag)
-                            if new_tag is not None:
-                                article_list.append(new_tag)
-                    
+                            article_info = normalize_article(tag)
+                            if article_info[2] is not '':
+                                # check if we already put in datastore
+                                # if we did, then don't put again
+                                # if we haven't, then make entity put
+                                article_list.append(article_info)
+                                
+                                article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
+                                article.headline = article_info[0]
+                                article.link = article_info[1]
+                                article.image = article_info[2]
+                                article.image_citation = article_info[3]
+                                article.source = domain
+                                article.team = team.name
+
+                                article.put()
                 except (KeyError, UnicodeDecodeError):
                     pass
                 
@@ -326,24 +346,29 @@ def normalize_article(tag):
     tag['class'] = 'post'
     tag_soup = BeautifulSoup(str(tag))
     link_tag = ''
+    link_url = ''
     # get a link (hopefully the article link)
     for sub_tag in tag_soup.find_all(True):
         if sub_tag.name == 'a':
             link_tag = sub_tag
             break
+    
     try:
         if len(str(link_tag['href']).strip()) == 0:
-            return None
+            pass
         # until we figure out what to do with tweets, don't store them
         if 'twitter' in str(link_tag['href']):
-            return None
-    except KeyError:
+            pass
+    except (KeyError, TypeError):
         return None
     # make sure link opens in new tab
     link_tag['target'] = '_blank'
-        
+    link_url = link_tag['href']
+    
     headline = unicode()
     image = ''
+    image_url = ''
+    image_cite = ''
     try:
         # link
         #link_tag = tag.find_all('a')[0]
@@ -362,16 +387,34 @@ def normalize_article(tag):
         
         # image
         image = tag_soup.find('img')
+            
+        image_url = ''
         if image is None:
             image = ''
         # need to extract deferred image loading link
         # then fix link so it works (width and height params screw everything up)
+        else:
+            image_soup = ''
+            try:
+                image['class'] = 'post-image'
+                image['src'] = image['data-defer-src']
+                image_soup = BeautifulSoup(str(image))
+            except (KeyError, TypeError):
+                # either this is N/A (KeyError)
+                # or there was no img tag so image is None (TypeError)
+                pass
+            if image_soup is not '':
+                try: 
+                    cite_div = image_soup.find_all('div')[0]
+                    image_cite = cite_div.string
+                except (IndexError):
+                    # no citation div tag
+                    image_cite = ''
+                    pass
         try:
-            image['src'] = image['data-defer-src']
-            image['class'] = 'post-image'
-        except (KeyError, TypeError):
-            # either this is N/A (KeyError)
-            # or there was no img tag so image is None (TypeError)
+            image_url = image['src']
+        except TypeError:
+            # if there was not an image
             pass
         
     except IndexError:
@@ -380,8 +423,15 @@ def normalize_article(tag):
     # if link is a tweet maybe put in different class of div?
     link_tag.string = headline
     new_tag = unicode('<div class="post">')
-    new_tag += unicode(image)
-    new_tag += unicode(link_tag)
+    new_tag += unicode(image_url)
+    new_tag += unicode('<br>')
+    new_tag += unicode(image_cite)
+    new_tag += unicode('<br>')
+    #new_tag += unicode(image)
+    #new_tag += unicode(link_tag)
+    new_tag += unicode(link_url)
+    new_tag += unicode('<br>')
+    new_tag += unicode(headline)
     #new_tag += unicode('<br>')
     #new_tag += headline
     #new_tag += unicode(image)
@@ -399,7 +449,7 @@ def normalize_article(tag):
     #   team
     #   id (hashed something... link?)
     
-    return new_tag
+    return [headline, link_url, image_url, image_cite]
 
 def has_text(tag):
     return tag.string is not None
