@@ -1,7 +1,7 @@
 import webapp2
 from google.appengine.ext import db
 from httplib import *
-from urllib import urlopen
+from urllib2 import urlopen
 import HTMLParser
 import re
 from threading import Thread
@@ -42,6 +42,7 @@ def article_key(article_name=DEFAULT_ARTICLE_NAME):
     return ndb.Key('Article', article_name)
 
 class Article(ndb.Model):
+    
     headline = ndb.StringProperty(indexed=False)
     link = ndb.StringProperty()
     image = ndb.StringProperty(indexed=False)
@@ -49,6 +50,7 @@ class Article(ndb.Model):
     source = ndb.StringProperty()
     team = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
+    
     
     # Article consists of:
     #   headline
@@ -165,7 +167,7 @@ def get_team_links(sites, team, league):
             f = urlopen(url)
             #site = f.geturl()
             data = f.read()
-        except HTTPException:
+        except (HTTPException, IOError):
             data = ''
 
         # use bs to find some stuff
@@ -260,9 +262,9 @@ def get_articles(league):
     article_list = []
     team_query = Team.query((Team.league == league), ancestor=team_key(DEFAULT_TEAM_NAME))
     team_entity = team_query.fetch(None)
-
     for team in team_entity:
         links = []
+        del article_list[:]
         for site in team.sites:
             links.append(site.url)
         
@@ -272,7 +274,7 @@ def get_articles(league):
             try:
                 f = urlopen(link)
                 data = f.read()
-            except HTTPException:
+            except (HTTPException, IOError):
                 data = ''
 
             # use bs to find some stuff
@@ -290,7 +292,7 @@ def get_articles(league):
             #articles.append(article_key)
         
             # get the tags corresponding to the keys
-            for tag in soup.find_all(True):
+            for tag in reversed(soup.find_all(True)):
                 try:
                     class_val = tag['class']
                     # article_info = [headline, link_url, image_url, image_cite]
@@ -299,48 +301,43 @@ def get_articles(league):
                     if len(class_val) == 1:
                         if article_class in class_val:
                             article_info = normalize_article(tag)
-                            if article_info[2] is not '':
-                                # check if we already put in datastore
-                                # if we did, then don't put again
-                                # if we haven't, the put
-                                article_list.append(article_info)
-            
-                                article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
-                                article.headline = article_info[0]
-                                article.link = article_info[1]
-                                article.image = article_info[2]
-                                article.image_citation = article_info[3]
-                                article.source = domain
-                                article.team = team.name
+                            if article_info[1] is not '':
+                                check_and_put(article_info, domain, team, article_list)
 
-                                article.put()
                     elif 'bleacherreport' in link:
                         if article_class in class_val:
                             article_info = normalize_article(tag)
-                            if article_info[2] is not '':
-                                # check if we already put in datastore
-                                # if we did, then don't put again
-                                # if we haven't, then make entity put
-                                article_list.append(article_info)
-                                
-                                article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
-                                article.headline = article_info[0]
-                                article.link = article_info[1]
-                                article.image = article_info[2]
-                                article.image_citation = article_info[3]
-                                article.source = domain
-                                article.team = team.name
-
-                                article.put()
+                            if article_info[1] is not '':
+                               check_and_put(article_info, domain, team, article_list)
                 except (KeyError, UnicodeDecodeError):
                     pass
-                
             #break
-        break
+        #break
     #articles_query = Article.query(ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
     #article_list = articles_query.fetch(10)
     return article_list
     
+def check_and_put(article_info, domain, team, article_list):
+    # extract from info list
+    article = Article(parent=article_key(DEFAULT_ARTICLE_NAME))
+    article.headline = article_info[0]
+    article.link = article_info[1]
+    article.image = article_info[2]
+    article.image_citation = article_info[3]
+    article.source = domain
+    article.team = team.name
+
+    # check if we already put in datastore
+    article_query = Article.query(Article.link == article.link, ancestor=article_key(DEFAULT_ARTICLE_NAME))  
+    num_matches = article_query.count(5)
+    if num_matches > 0:
+        # if we did, then don't put again
+        pass
+    else:
+        # if we haven't, then make entity put
+        article_list.append(article.headline)
+        article.put()
+
 def normalize_article(tag):
     tag.name = 'div'
     tag['class'] = 'post'
@@ -358,9 +355,9 @@ def normalize_article(tag):
             pass
         # until we figure out what to do with tweets, don't store them
         if 'twitter' in str(link_tag['href']):
-            pass
+            return ['','','','']
     except (KeyError, TypeError):
-        return None
+        return ['','','','']
     # make sure link opens in new tab
     link_tag['target'] = '_blank'
     link_url = link_tag['href']
@@ -509,39 +506,28 @@ class SearchQuery(webapp2.RequestHandler):
         league = self.request.get("league")
         league = league.lower()        
       
-        #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
-        articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
+        articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
+        #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
         article_list = articles_query.fetch(20)
-      
-        """
-        template_values = {
-            'articles' : articles
-        }
-        """
-      
+
         # output
-        filename = 'search_header.html'
-        f = open(filename, 'r')
-        header = f.read()
-        f.close()
         
-        filename = 'search_footer.html'
-        f = open(filename, 'r')
-        footer = f.read()
-        f.close()
+        template_values = {
+            'articles' : article_list
+        }
         
-        #render_template(self, 'search.html', template_values)      
-        images_stuff = ''
+        render_template(self, 'search.html', template_values)      
+        """
         self.response.out.write(header)
         
         for article in article_list:
             self.response.out.write('<div class="post">')
-            soup = BeautifulSoup(article.metadata)
-            self.response.out.write(article.metadata)
+            self.response.out.write(article.headline)
             self.response.out.write('</div>')
             self.response.out.write('<br>')
             
         self.response.out.write(footer)
+        """
 
 class Feed(webapp2.RequestHandler):
     def get(self):

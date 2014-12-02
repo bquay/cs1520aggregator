@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script src="scripts/funcs.js">//</script>
+	<title>FanCrawler</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link href="css/default.css" rel="stylesheet" type="text/css" />
+	<link rel="shortcut icon" href="css/images/ballIcon.png">
+</head>
+<body>
+<div id="header">
+	<h1><a href="/">FanCrawler</a></h1>
+	<h2>Follow Your Teams</h2>
+	<!--<div id="signin"><a href="https://accounts.google.com/ServiceLogin">Sign In</a></div>-->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+	{% for article in articles %}
+	    <a href={{article.link}} target="_blank">
+	    <h2>
+	        {{article.headline}}
+	    </h2>
+	    </a>
+	    <img src = {{article.image}} />
+	    <br>
+    {% endfor %}
+	</div>
+	<!-- end #content -->
+	<div style="clear: both;">&nbsp;</div>
+</div>
+<!-- end #page -->
+<div id="footer">
+	<p id="legal">Designed by Brendan Quay, Devon Broglie, Drew Winfield.</p>
+	<p id="links"><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
