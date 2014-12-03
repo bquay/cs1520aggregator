@@ -329,7 +329,7 @@ def check_and_put(article_info, domain, team, article_list):
 
     # check if we already put in datastore
     article_query = Article.query(Article.link == article.link, ancestor=article_key(DEFAULT_ARTICLE_NAME))  
-    num_matches = article_query.count(5)
+    num_matches = article_query.count(1)
     if num_matches > 0:
         # if we did, then don't put again
         pass
@@ -510,15 +510,18 @@ class SearchQuery(webapp2.RequestHandler):
         #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
         article_list = articles_query.fetch(20)
 
+        login_url = users.create_login_url('/')
+        
         # output
         
         template_values = {
+            'login' : login_url,
             'articles' : article_list
         }
         
         render_template(self, 'search.html', template_values)      
         """
-        self.response.out.write(header)
+        #self.response.out.write(header)
         
         for article in article_list:
             self.response.out.write('<div class="post">')
@@ -526,7 +529,7 @@ class SearchQuery(webapp2.RequestHandler):
             self.response.out.write('</div>')
             self.response.out.write('<br>')
             
-        self.response.out.write(footer)
+        #self.response.out.write(footer)
         """
 
 class Feed(webapp2.RequestHandler):
@@ -561,9 +564,6 @@ class Feed(webapp2.RequestHandler):
             article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
             article_objects = article_query.fetch(20)
             
-            for article in article_objects :
-                articles.append(parser.unescape(article.metadata))                
-          
         else:
             login_url = users.create_login_url('/')
             self.redirect('/')
@@ -607,9 +607,7 @@ class Feed(webapp2.RequestHandler):
             
             article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
             article_objects = article_query.fetch(20)
-            
-            for article in article_objects :
-                articles.append(parser.unescape(article.metadata))                 
+                      
           
         else:
             login_url = users.create_login_url('/')
