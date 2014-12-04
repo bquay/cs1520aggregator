@@ -44,15 +44,17 @@
 				</div>
 			{% endif %}
 			{% if articles %}
-				<table style="width:90%" align="center" cellpadding="10px" cellspacing="5px">
+				<table style="width:100%" align="center" cellpadding="10px" cellspacing="5px">
 				<tr>
 					{% for article in articles %}
-						{% if forloop.counter0|divisibleby:3 %}
+						{% if forloop.counter0|divisibleby:3 and forloop.counter0 != 0 %}
 							</tr><tr> 
 						{% endif %}
 						<td class="articleTable">
-							<div class="displayArticle"><img class="articleImg" src="{article.image}}" /></div>
-							<div class="articleTitle"><a href="{{article.link}}" target="_blank"><h2>{{article.headline}}</h2></a></div>
+							{% if article.image %}
+								<div class="displayArticle"><img class="articleImg" src="{{article.image}}" /></div>
+							{% endif %}
+							<div class="articleTitle"><a href={{article.link}} target="_blank"><h2>{{article.headline}}</h2></a></div>
 						</td>
 					{% endfor %}
 				</tr>

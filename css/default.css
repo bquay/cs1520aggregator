@@ -173,18 +173,18 @@ a:hover {
 
 /* Table */
 tr {
-	width:680px;
-	height:400px;
+	width:700px;
+	height:200px;
+	margin-left: 0px;
+	padding-left: 0px;
 }
 
 td {
 	border: 1px solid #565736;
-	width: 230px;
+	width: 200px;
 	height: 100px;
 	vertical-align:top;
 	background-color: #313313;
-	max-height:100px;
-	max-width: 220px;
 	overflow: auto;
 }
 td div.teams{
@@ -324,8 +324,10 @@ table select {
 	text-align: center;
 	padding: 5px;
 	font-size: 20px;
+	vertical-align:center;
 }
 .articleImg{
 	height: 100%;
+	width: 100%;
 	align-content: center;
 }
