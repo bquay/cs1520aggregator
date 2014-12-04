@@ -16,7 +16,7 @@
 		{% if login %}
 			<div id="signin"><a href="{{login}}">Sign In</a>
 		{% else %}
-			<a href="{{logout}}">Sign Out</a>
+			<a href="{{logout}}">Sign</a>
 			<a href="/choose_teams">Edit Profile</a>: {{nickname}}</div>
 		{% endif %}
 </div>
@@ -43,31 +43,27 @@
 					<a href="/choose_teams">Edit your prifle to add teams!</a>
 				</div>
 			{% endif %}
-			<div>
-			<table style="width:50%" align="center" cellpadding="10px" cellspacing="5px">
+			{% if articles %}
+				<table style="width:90%" align="center" cellpadding="10px" cellspacing="5px">
 				<tr>
-					<td class="articleTable">
-						<div class="displayShow"><img class="showImg" src="{{show.imgsrc}}" alt="{{show.imgsrc}}" height="200" width="200"/></div>
-					</td>
-					<td class="articleTable">
-						<div class="showName">{{show.name}}</div>
-						<p>This is where the article text will be. a short little blurb about what it is.</p>
-					</td>
-				</tr>
-			</table>
-				{% if articles %}
 					{% for article in articles %}
-						<a href={{article.link}} target="_blank"><h2>{{article.headline}}</h2></a>
-						<img src = {{article.image}} /><br>
+						{% if forloop.counter0|divisibleby:3 %}
+							</tr><tr> 
+						{% endif %}
+						<td class="articleTable">
+							<div class="displayArticle"><img class="articleImg" src="{article.image}}" /></div>
+							<div class="articleTitle"><a href="{{article.link}}" target="_blank"><h2>{{article.headline}}</h2></a></div>
+						</td>
 					{% endfor %}
+				</tr>
+				</table>
+			{% else %}
+				{% if given_team %}
+					<br><div> There are currently no articles for {{given_team}}</div>
 				{% else %}
-					{% if given_team %}
-						<br><div> There are currently no articles for {{given_team}}</div>
-					{% else %}
-						<br><div> There are currently no articles for you</div>
-					{% endif %}
+					<br><div> There are currently no articles for you</div>
 				{% endif %}
-			</div>
+			{% endif %}
 		</div>
 	</div>
 	<!-- end #content -->
