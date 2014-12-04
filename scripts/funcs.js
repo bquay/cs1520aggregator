@@ -97,7 +97,7 @@ function moreArticles(offset, team)
                 var json_parsed = JSON.parse(json);
                 var articles = json_parsed.articles;
 
-                var contentDiv = document.getElementById("content");
+                var contentDiv = document.getElementById("contentPost");
                 var newArticles = '<table style="width:100%" align="center" cellpadding="10px" cellspacing="5px"><tr>';
                 while (articles[i] != null) {                        
 					if ((i != 0) && (i%3==0) ){
@@ -116,7 +116,7 @@ function moreArticles(offset, team)
             } catch (err)
             {
                 console.log("None left");
-                var contentDiv = document.getElementById("content");
+                var contentDiv = document.getElementById("contentPost");
                 contentDiv.innerHTML += "There are no more articles related to the" +  team + "<br>";
             }
         }
