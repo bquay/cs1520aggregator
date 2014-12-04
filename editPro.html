@@ -20,10 +20,11 @@
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2>
 		{% if login %}
-	<div id="signin"><a href="{{login}}">Sign In</a></div>
+			<div id="signin"><a href="{{login}}">Sign In</a>
 		{% else %}
-	<div id="signin"><a href="{{logout}}">Sign Out</a></div>
-	<div id="editpro"><a href="">Edit Profile</a>: {{nickname}}</div>
+			<a href="{{logout}}">Sign Out</a>
+            <a href="/feed">Feeds</a>
+			<a href="/choose_teams">Edit Profile</a>: {{nickname}}</div>
 		{% endif %}
 </div>
 <!-- end #header -->
