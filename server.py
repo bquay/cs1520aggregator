@@ -561,8 +561,12 @@ class Feed(webapp2.RequestHandler):
                     given_team = team.name
                 user_teams.append(team.name)
             
-            article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
-            article_objects = article_query.fetch(20)
+            team = str(user_teams[0])
+            
+            articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
+            #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
+            article_list = articles_query.fetch(20)
+
             
         else:
             login_url = users.create_login_url('/')
@@ -574,7 +578,7 @@ class Feed(webapp2.RequestHandler):
             'nickname' : name,
             'given_team' : given_team,
             'user_teams' : user_teams,
-            'articles' : articles
+            'articles' : article_list
         }        
         
         render_template(self, 'userPro.html', template_values)
@@ -605,8 +609,11 @@ class Feed(webapp2.RequestHandler):
                 team = user.teams[i]
                 user_teams.append(team.name)
             
-            article_query = Article.query((Article.team == given_team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
-            article_objects = article_query.fetch(20)
+            team = str(given_team)
+            
+            articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
+            #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
+            article_list = articles_query.fetch(20)
                       
           
         else:
@@ -619,7 +626,7 @@ class Feed(webapp2.RequestHandler):
             'nickname' : name,
             'given_team' : given_team,
             'user_teams' : user_teams,
-            'articles' : articles
+            'articles' : article_list
         }        
         
         render_template(self, 'userPro.html', template_values)
