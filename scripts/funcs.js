@@ -1,10 +1,3 @@
-function team(league, name) {
-    this.league = league;
-    this.name = name;
-}
-
-var userTeams = [];
-
 function createXmlHttp() {
     var xmlhttp;
     if (window.XMLHttpRequest) {
@@ -59,60 +52,6 @@ function createTeamsDropDown() {
     postParameters(xmlHttp, '/teamsAjax', 'league='+leagueInput);
 }
 
-function addTeam() {
-	var displayTeams = document.getElementById('selectedTeams');
-	var leagues = document.getElementById('leagues');
-    var leagueInput = leagues.options[leagues.selectedIndex].text;
-	
-	var teams = document.getElementById('teams');
-	var teamInput = teams.options[teams.selectedIndex].text;
-
-	var newTeam = leagueInput + "-" + teamInput;
-	
-	if(userTeams.indexOf(newTeam) <= -1){
-		userTeams.push(newTeam);
-	}
-	var stringTeam = "";
-	for(oldTeam in userTeams){
-		stringTeam = stringTeam + userTeams[oldTeam] + "<br>";
-	}
-    
-    teams.style.display = "none";
-    teams.innerHTML = "";
-    
-    leagues.selectedIndex = leagues.options[0];
-    
-	displayTeams.innerHTML = stringTeam;
-}
-
-function removeTeam(){
-	if(userTeams.length > 0){
-		userTeams.splice((userTeams.length-1),1);
-	}
-	
-	var displayTeams = document.getElementById('selectedTeams');
-	var stringTeam = "";
-	var oldTeam;
-	for(oldTeam in userTeams){
-		stringTeam = stringTeam + userTeams[oldTeam] + "<br>";
-	}
-	displayTeams.innerHTML = stringTeam;
-}
-
-function saveTeams(form) {
-    var teamsToAdd = document.getElementById('teamsToAdd');
-    
-    var teamsStr = "";
-    
-	var team;
-	for(team in userTeams){
-		teamsStr = teamsStr + userTeams[team] + "-";
-	}
-    
-    teamsToAdd.value = teamsStr;
-    
-    form.submit();
-}
 
 function setLeagueAndTeamAndSubmitForm(form) {
     var leagues = document.getElementById('leagues');

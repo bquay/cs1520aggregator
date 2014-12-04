@@ -9,6 +9,7 @@ import Queue
 from bs4 import BeautifulSoup
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
+from google.appengine.api import memcache
 from google.appengine.ext import ndb
 import os
 
@@ -42,7 +43,6 @@ def article_key(article_name=DEFAULT_ARTICLE_NAME):
     return ndb.Key('Article', article_name)
 
 class Article(ndb.Model):
-    
     headline = ndb.StringProperty(indexed=False)
     link = ndb.StringProperty()
     image = ndb.StringProperty(indexed=False)
@@ -50,7 +50,6 @@ class Article(ndb.Model):
     source = ndb.StringProperty()
     team = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
-    
     
     # Article consists of:
     #   headline
@@ -547,8 +546,6 @@ class Feed(webapp2.RequestHandler):
         
         name = ''
         
-        myresponse = ''
-        
         if curr_user:
             logout_url = users.create_logout_url('/')
             name = curr_user.nickname()
@@ -642,6 +639,7 @@ class ChooseTeams(webapp2.RequestHandler):
         logout_url = ''
         
         name = ''
+        user_teams = []
         
         if user:
             user_query = User.query((User.user == user), ancestor=user_key(DEFAULT_USER_NAME))
@@ -655,7 +653,13 @@ class ChooseTeams(webapp2.RequestHandler):
                 user_db.user = user
                 user_db.teams = []
                 user_db.put()
-          
+            else:
+                # check memcache first!
+                user_teams = memcache.get(user.user_id())
+                # if memcache is empty, pull from datastore
+                if user_teams is None:
+                    user_teams = user_db.teams
+                    memcache.add(user.user_id(), user_teams, 300)
         else:
             login_url = users.create_login_url('/')
             self.redirect('/')
@@ -663,14 +667,14 @@ class ChooseTeams(webapp2.RequestHandler):
         template_values = {
             'login' : login_url,
             'logout' : logout_url,
-            'nickname' : name
-        }
-        
+            'nickname' : name,
+            'teams' : user_teams
+        }        
         
         render_template(self, 'editPro.html', template_values)
     
     def post(self):
-        teams_str = self.request.get("teamsToAdd")
+        teams_str = self.request.get("userTeams")
         teams_str = teams_str[:-1]
         teams = teams_str.split('-')
         
@@ -693,8 +697,7 @@ class ChooseTeams(webapp2.RequestHandler):
             num = num + 2
         
         user.put()
-        self.redirect('/feed')
-        
+        self.redirect('/feed')        
         
 #--------------------------- CRON JOBS ----------------------------#
 class GetNFLSites(webapp2.RequestHandler):
@@ -806,6 +809,69 @@ class GetTeams(webapp2.RequestHandler):
             json_file = json_file + 'nhl-teams.json'
         
         render_template(self, json_file, {})
+
+class UpdateCache(webapp2.RequestHandler):
+    def post(self):
+        teams_str = self.request.get("userTeams")
+        teams_str = teams_str[:-1]
+        teams = teams_str.split(',')
+        user_teams = []
+        
+        num = 0
+        while num < len(teams) :
+            # parent=user_key(DEFAULT_USER_NAME)
+            team = UserTeam()
+            team_and_league = teams[num].split('-')
+            team.league = team_and_league[0]
+            team.name = team_and_league[1]
+            
+            user_teams.append(team)
+            
+            num = num + 1
+            
+        user = users.get_current_user()
+        
+        if user:
+            data = memcache.get(user.user_id())
+            
+            if data is not None:
+                memcache.delete(user.user_id())
+            
+            memcache.set(user.user_id(), user_teams)
+            
+class SaveUserTeams(webapp2.RequestHandler):
+    def post(self):
+        teams_str = self.request.get("userTeams")
+        teams_str = teams_str[:-1]
+        teams = teams_str.split(',')
+        
+        curr_user = users.get_current_user()
+        
+        user_query = User.query((User.user == curr_user), ancestor=user_key(DEFAULT_USER_NAME))
+        user = user_query.get()
+        
+        if user == None:
+            user = User(parent=user_key(DEFAULT_USER_NAME))
+        
+        user.teams = []
+        
+        num = 0        
+        while num < len(teams) :
+            team = UserTeam(parent=user_key(DEFAULT_USER_NAME))
+            team_and_league = teams[num].split('-')
+            team.league = team_and_league[0]
+            team.name = team_and_league[1]
+            
+            user.teams.append(team)
+            
+            num = num + 1
+        
+        user.put()
+        
+        memcache.delete(curr_user.user_id())
+        memcache.set(curr_user.user_id(), user.teams)
+        
+        self.redirect('/feed')
         
 class getMoreArticles(webapp2.RequestHandler):
     def post(self):
@@ -831,6 +897,8 @@ app = webapp2.WSGIApplication([
     ('/feed', Feed),
     ('/choose_teams', ChooseTeams),
     ('/teamsAjax', GetTeams),
+    ('/updateCache', UpdateCache),
+    ('/saveTeams', SaveUserTeams),
     ('/getMoreArticles', getMoreArticles),
     ('/getNFLSites', GetNFLSites),
     ('/getNBASites', GetNBASites),
