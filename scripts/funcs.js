@@ -66,8 +66,6 @@ function setLeagueAndTeamAndSubmitForm(form) {
         teamInput.value = teams.options[teams.selectedIndex].text;
         form.submit();
     }
-	
-	form.submit();
 }
 
 function changeFeed(form) {
@@ -116,8 +114,6 @@ function moreArticles(offset, team)
             } catch (err)
             {
                 console.log("None left");
-                var contentDiv = document.getElementById("contentPost");
-                contentDiv.innerHTML += "There are no more articles related to the" +  team + "<br>";
             }
         }
     }
