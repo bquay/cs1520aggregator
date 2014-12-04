@@ -1,3 +1,9 @@
-{"teams" : [
-
+{"articles" : [
+    {% for article in articles %}
+    {
+	    "link": "{{article.link}}",
+	    "headline":  "{{article.headline}}",
+        "image": "{{article.image}}"
+    },
+    {% endfor %}
 ]}

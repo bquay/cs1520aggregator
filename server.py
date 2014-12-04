@@ -876,18 +876,24 @@ class SaveUserTeams(webapp2.RequestHandler):
 class getMoreArticles(webapp2.RequestHandler):
     def post(self):
         offset = self.request.get('offset')
+        # need offset to be an int
+        offset = int(offset)
+        team = self.request.get('team')
 
         articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
         #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
-        article_list = articles_query.fetch(offset + 20)
+        article_list = articles_query.fetch(offset + 21)
         
-        article_list = article_list[:-20]
+        article_list = article_list[:-21]
+        for i in range(0, len(article_list)):
+            article = article_list[i]
+            article.headline = article.headline.strip()
 
         template_values = {
             'articles' : article_list
         }
         
-        article_template = '/templates/JSON/article_template.json'
+        article_template = 'templates/JSON/article_template.json'
         
         render_template(self, article_template, template_values) 
             

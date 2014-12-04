@@ -15,7 +15,9 @@
         $(window).scroll(function() {
             if($(window).scrollTop() == $(document).height() - $(window).height()) {
                offset += 20;
-               alert(offset);
+               var team = document.getElementById("team").getAttribute('value');
+               console.log(team);
+               moreArticles(offset, team);
             }
         });
 	</script>
@@ -28,6 +30,7 @@
 </div>
 <!-- end #header -->
 <div id="page">
+    <input id="team" type="hidden" name="team" value="{{team}}">
 	<div id="content">
 	{% for article in articles %}
 	    <a href={{article.link}} target="_blank">
