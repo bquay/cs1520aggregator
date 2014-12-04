@@ -12,12 +12,12 @@
 <body>
 <div id="header">
 	<h1><a href="/">FanCrawler</a></h1>
-	<h2>Follow Your Teams</h2>
+	<h2>Follow Your Teams</h2><br>
 		{% if login %}
-	<div id="signin"><a href="{{login}}">Sign In</a></div>
+			<div id="signin"><a href="{{login}}">Sign In</a>
 		{% else %}
-	<div id="signin"><a href="{{logout}}">Sign Out</a></div>
-	<div id="editpro"><a href="">Edit Profile</a>: {{nickname}}</div>
+			<a href="{{logout}}">Sign</a>
+			<a href="/choose_teams">Edit Profile</a>: {{nickname}}</div>
 		{% endif %}
 </div>
 <!-- end #header -->
@@ -25,23 +25,48 @@
 	<div id="content">
 		<div class="post">
 			<h1 class="title"><span>Welcome {{nickname}}</span></h1>
-			<form id="teamFeed" method="post" action="feed">
-			    <input type="hidden" name="team" id="team" />
-				<select id="teams">
-                    <option selected="selected" value="{{given_team}}">{{given_team}}</option>
-					{% for team in user_teams %}
-						{% if team != given_team %}
-							<option value="{{team}}">{{team}}</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-                <input type="button" style="display:block" value=" go " onclick="changeFeed(this.form);"/>
-			</form>	
+			{% if user_teams %}
+				<form id="teamFeed" method="post" action="feed">
+					<input type="hidden" name="team" id="team" />
+					<select id="teams">
+						<option selected="selected" value="{{given_team}}">{{given_team}}</option>
+						{% for team in user_teams %}
+							{% if team != given_team %}
+								<option value="{{team}}">{{team}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+					<input type="button" style="display:block" value=" go " onclick="changeFeed(this.form);"/>
+				</form>	
+			{% else %}
+				<div>You Do not have any teams<br>
+					<a href="/choose_teams">Edit your prifle to add teams!</a>
+				</div>
+			{% endif %}
 			<div>
-				<!--{% for article in articles %}
-					<div>{{article}}<br></div>
-				{% endfor %}--><br><br>
-				<h1> Articles are Coming Soon! </h1>
+			<table style="width:50%" align="center" cellpadding="10px" cellspacing="5px">
+				<tr>
+					<td class="articleTable">
+						<div class="displayShow"><img class="showImg" src="{{show.imgsrc}}" alt="{{show.imgsrc}}" height="200" width="200"/></div>
+					</td>
+					<td class="articleTable">
+						<div class="showName">{{show.name}}</div>
+						<p>This is where the article text will be. a short little blurb about what it is.</p>
+					</td>
+				</tr>
+			</table>
+				{% if articles %}
+					{% for article in articles %}
+						<a href={{article.link}} target="_blank"><h2>{{article.headline}}</h2></a>
+						<img src = {{article.image}} /><br>
+					{% endfor %}
+				{% else %}
+					{% if given_team %}
+						<br><div> There are currently no articles for {{given_team}}</div>
+					{% else %}
+						<br><div> There are currently no articles for you</div>
+					{% endif %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
