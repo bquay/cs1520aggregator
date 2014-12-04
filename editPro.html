@@ -19,13 +19,14 @@
 <div id="header">
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2>
-		{% if login %}
-			<div id="signin"><a href="{{login}}">Sign In</a>
-		{% else %}
-			<a href="{{logout}}">Sign Out</a>
-            <a href="/feed">Feed</a>
-			<a href="/">Search</a>
-		{% endif %}
+	{% if login %}
+		<br>
+		<div id="signin"><a href="{{login}}">Sign In</a></div>
+	{% else %}
+		<br>
+		<div id="signin"><a href="{{logout}}">Sign Out</a>
+		<a href="/feed">Feed</a></div>
+	{% endif %}
 </div>
 <!-- end #header -->
 <div id="page">

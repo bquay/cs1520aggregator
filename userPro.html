@@ -8,22 +8,37 @@
 	<meta name="description" content="" />
 	<link href="css/default.css" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" href="css/images/ballIcon.png">
+	<script>
+	    var offset = 0;
+	    // taken from http://stackoverflow.com/questions/14035180/jquery-load-more-data-on-scroll
+        $(window).scroll(function() {
+            if($(window).scrollTop() == $(document).height() - $(window).height()) {
+               offset += 21;
+               var team = document.getElementById("team").getAttribute('value');
+               console.log(team);
+               console.log(offset);
+               moreArticles(offset, team);
+            }
+        });
+	</script>
 </head>
 <body>
 <div id="header">
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2><br>
 	{% if login %}
-		<div id="signin"><a href="{{login}}">Sign In</a>
+		<br>
+		<div id="signin"><a href="{{login}}">Sign In</a></div>
 	{% else %}
 		<div id="signin"><a href="{{logout}}">Sign Out</a>
-		<a href="/choose_teams">Edit Profile</a>
-		<a href="/">Search</a>
+		<a href="/choose_teams">Edit Profile</a></div>
 	{% endif %}
-	</div>
 </div>
 <!-- end #header -->
 <div id="page">
+	{% if given_team %}
+		<input id="team" type="hidden" name="team" value="{{given_team}}">
+	{% endif %}
 	<div id="content">
 		<div class="post">
 			<h1 class="title"><span>Welcome {{nickname}}</span></h1>

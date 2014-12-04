@@ -28,13 +28,13 @@
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2>
 	{% if login %}
-		<div id="signin"><a href="{{login}}">Sign In</a>
+		<br>
+		<div id="signin"><a href="{{login}}">Sign In</a></div>
 	{% else %}
 		<div id="signin"><a href="{{logout}}">Sign Out</a>
 		<a href="/choose_teams">Edit Profile</a>
-		<a href="/feed">Feed</a>
+		<a href="/feed">Feed</a></div>
 	{% endif %}
-	</div>
 </div>
 <!-- end #header -->
 <div id="page">

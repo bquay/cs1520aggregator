@@ -98,20 +98,26 @@ function moreArticles(offset, team)
                 var articles = json_parsed.articles;
 
                 var contentDiv = document.getElementById("content");
-                var newArticles = '';
+                var newArticles = '<table style="width:100%" align="center" cellpadding="10px" cellspacing="5px"><tr>';
                 while (articles[i] != null) {                        
-
-                    newArticles += "<a href=\"" + articles[i].link + "\" target=\"_blank\">";
-                    newArticles += "<h2>" + articles[i].headline + "</h2>";
-                    newArticles += "</a> <img src = \"" + articles[i].image + "\" /> <br>";
+					if ((i != 0) && (i%3==0) ){
+						newArticles += "</tr><tr>";
+					}
+					newArticles += '<td class="articleTable">';
+					if( articles[i].image != null){
+						newArticles += '<div class="displayArticle"><img class="articleImg" src="'+ articles[i].image +'"/></div>';
+					}
+                    newArticles += '<div class="articleTitle"><a href="'+articles[i].link+'" target="_blank"><h2>'+articles[i].headline+'</h2></a></div>';
+					newArticles += "</td>";
                     i++;
                 }
+				newArticles += "</tr></table>";
                 contentDiv.innerHTML = contentDiv.innerHTML + newArticles;
             } catch (err)
             {
                 console.log("None left");
                 var contentDiv = document.getElementById("content");
-                contentDiv.innerHTML += "There are no more articles related to the" +  team;
+                contentDiv.innerHTML += "There are no more articles related to the" +  team + "<br>";
             }
         }
     }
