@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script src="scripts/funcs.js">//</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<title>FanCrawler</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
@@ -14,7 +15,7 @@
         $(window).scroll(function() {
             if($(window).scrollTop() == $(document).height() - $(window).height()) {
                offset += 21;
-               var team = document.getElementById("team").getAttribute('value');
+               var team = document.getElementById("team_val").getAttribute('value');
                console.log(team);
                console.log(offset);
                moreArticles(offset, team);
@@ -36,15 +37,13 @@
 </div>
 <!-- end #header -->
 <div id="page">
-	{% if given_team %}
-		<input id="team" type="hidden" name="team" value="{{given_team}}">
-	{% endif %}
+	<input id="team_val" type="hidden" name="team_val" value="{{team}}">
 	<div id="content">
 		<div id="contentPost" class="post">
 			<h1 class="title"><span>Welcome {{nickname}}</span></h1>
 			{% if user_teams %}
 				<form id="teamFeed" method="post" action="feed">
-					<input type="hidden" name="team" id="team" />
+					<input type="hidden" name="team" id="team" value="{{given_team}}" />
 					<select id="teams">
 						<option selected="selected" value="{{given_team}}">{{given_team}}</option>
 						{% for team in user_teams %}

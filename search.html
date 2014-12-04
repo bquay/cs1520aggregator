@@ -15,7 +15,7 @@
         $(window).scroll(function() {
             if($(window).scrollTop() == $(document).height() - $(window).height()) {
                offset += 21;
-               var team = document.getElementById("team").getAttribute('value');
+               var team = document.getElementById("team_val").getAttribute('value');
                console.log(team);
                console.log(offset);
                moreArticles(offset, team);
@@ -38,7 +38,7 @@
 </div>
 <!-- end #header -->
 <div id="page">
-	<input id="team" type="hidden" name="team" value="{{team}}">
+	<input id="team_val" type="hidden" name="team_val" value="{{team}}">
 	<div id="content">
 		<div id="contentPost" class="post">
 			<table style="width:100%" align="center" cellpadding="10px" cellspacing="5px">
