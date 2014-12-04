@@ -14,9 +14,10 @@
 	    // taken from http://stackoverflow.com/questions/14035180/jquery-load-more-data-on-scroll
         $(window).scroll(function() {
             if($(window).scrollTop() == $(document).height() - $(window).height()) {
-               offset += 20;
+               offset += 21;
                var team = document.getElementById("team").getAttribute('value');
                console.log(team);
+               console.log(offset);
                moreArticles(offset, team);
             }
         });

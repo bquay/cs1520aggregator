@@ -507,7 +507,7 @@ class SearchQuery(webapp2.RequestHandler):
       
         articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
         #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
-        article_list = articles_query.fetch(20)
+        article_list = articles_query.fetch(21)
 
         login_url = users.create_login_url('/')
         
@@ -515,7 +515,8 @@ class SearchQuery(webapp2.RequestHandler):
         
         template_values = {
             'login' : login_url,
-            'articles' : article_list
+            'articles' : article_list,
+            'team' : team
         }
         
         render_template(self, 'search.html', template_values)      
@@ -562,7 +563,7 @@ class Feed(webapp2.RequestHandler):
             
             articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
             #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
-            article_list = articles_query.fetch(20)
+            article_list = articles_query.fetch(21)
 
             
         else:
@@ -575,7 +576,8 @@ class Feed(webapp2.RequestHandler):
             'nickname' : name,
             'given_team' : given_team,
             'user_teams' : user_teams,
-            'articles' : article_list
+            'articles' : article_list,
+            'team' : team
         }        
         
         render_template(self, 'userPro.html', template_values)
@@ -610,7 +612,7 @@ class Feed(webapp2.RequestHandler):
             
             articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
             #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
-            article_list = articles_query.fetch(20)
+            article_list = articles_query.fetch(21)
                       
           
         else:
@@ -623,7 +625,8 @@ class Feed(webapp2.RequestHandler):
             'nickname' : name,
             'given_team' : given_team,
             'user_teams' : user_teams,
-            'articles' : article_list
+            'articles' : article_list,
+            'team' : team
         }        
         
         render_template(self, 'userPro.html', template_values)
@@ -884,7 +887,7 @@ class getMoreArticles(webapp2.RequestHandler):
         #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
         article_list = articles_query.fetch(offset + 21)
         
-        article_list = article_list[:-21]
+        article_list = article_list[offset:]
         for i in range(0, len(article_list)):
             article = article_list[i]
             article.headline = article.headline.strip()
@@ -892,9 +895,9 @@ class getMoreArticles(webapp2.RequestHandler):
         template_values = {
             'articles' : article_list
         }
-        
+    
         article_template = 'templates/JSON/article_template.json'
-        
+    
         render_template(self, article_template, template_values) 
             
 app = webapp2.WSGIApplication([

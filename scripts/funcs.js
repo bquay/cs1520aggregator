@@ -60,14 +60,14 @@ function setLeagueAndTeamAndSubmitForm(form) {
 	
 	var teams = document.getElementById('teams');
 	var teamInput = document.getElementById('team');
-	
-    
     if (teams.options[teams.selectedIndex] == null || teams.options[teams.selectedIndex].text == '') {
         alert('Please select a league and a team.');
     } else {
         teamInput.value = teams.options[teams.selectedIndex].text;
         form.submit();
     }
+	
+	form.submit();
 }
 
 function changeFeed(form) {
@@ -89,26 +89,30 @@ function moreArticles(offset, team)
         if (xmlHttp.readyState == 4) {
             var i = 0;
             // we parse the content of the response
-            console.log(xmlHttp.responseText);
-            var json = xmlHttp.responseText.substr(0, xmlHttp.responseText.lastIndexOf(',')) + "]}";
+            //console.log(xmlHttp.responseText);
+            try
+            {
+                var json = xmlHttp.responseText.substr(0, xmlHttp.responseText.lastIndexOf(',')) + "]}";
             
-            var json_parsed = JSON.parse(json);
-            var articles = json_parsed.articles;
+                var json_parsed = JSON.parse(json);
+                var articles = json_parsed.articles;
 
-			var contentDiv = document.getElementById("content");
-			var newArticles = '';
-			while (articles[i] != null) {                        
-                console.log(articles[i].headline);
-                /*
-                headlines += articles[i].headline;
-                headlines += "\n";
-                */
-                newArticles += "<a href=\"" + articles[i].link + "\" target=\"_blank\">";
-	            newArticles += "<h2>" + articles[i].headline + "</h2>";
-	            newArticles += "</a> <img src = \"" + articles[i].image + "\" /> <br>";
-                i++;
+                var contentDiv = document.getElementById("content");
+                var newArticles = '';
+                while (articles[i] != null) {                        
+
+                    newArticles += "<a href=\"" + articles[i].link + "\" target=\"_blank\">";
+                    newArticles += "<h2>" + articles[i].headline + "</h2>";
+                    newArticles += "</a> <img src = \"" + articles[i].image + "\" /> <br>";
+                    i++;
+                }
+                contentDiv.innerHTML = contentDiv.innerHTML + newArticles;
+            } catch (err)
+            {
+                console.log("None left");
+                var contentDiv = document.getElementById("content");
+                contentDiv.innerHTML += "There are no more articles related to the" +  team;
             }
-            contentDiv.innerHTML = contentDiv.innerHTML + newArticles;
         }
     }
     postParameters(xmlHttp, '/getMoreArticles', 'offset='+ offset + '&team=' + team);
