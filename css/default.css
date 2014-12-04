@@ -123,10 +123,8 @@ input {
 	font-size: 16px;
 }
 
-#header #editpro{
-	text-align: right;
-	font-size: 16px;
-	padding: 0 7px 0 0;
+#header #signin a{
+	padding-left: 20px;
 }
 
 a:visited {

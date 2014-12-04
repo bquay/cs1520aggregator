@@ -13,12 +13,14 @@
 <div id="header">
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2><br>
-		{% if login %}
-			<div id="signin"><a href="{{login}}">Sign In</a>
-		{% else %}
-			<a href="{{logout}}">Sign</a>
-			<a href="/choose_teams">Edit Profile</a>: {{nickname}}</div>
-		{% endif %}
+	{% if login %}
+		<div id="signin"><a href="{{login}}">Sign In</a>
+	{% else %}
+		<div id="signin"><a href="{{logout}}">Sign Out</a>
+		<a href="/choose_teams">Edit Profile</a>
+		<a href="/">Search</a>
+	{% endif %}
+	</div>
 </div>
 <!-- end #header -->
 <div id="page">
@@ -74,7 +76,6 @@
 <!-- end #page -->
 <div id="footer">
 	<p id="legal">Designed by Brendan Quay, Devon Broglie, Drew Winfield.</p>
-	<p id="links"><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
 </div>
 <!-- end #footer -->
 </body>

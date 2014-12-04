@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script src="scripts/funcs.js">//</script>
-    <script src="scripts/homePage.js">//</script>
+	<script src="scripts/homePage.js">//</script>
 	<title>FanCrawler</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
@@ -14,12 +14,14 @@
 <div id="header">
 	<h1><a href="/">FanCrawler</a></h1>
 	<h2>Follow Your Teams</h2>
-		{% if login %}
-	<div id="signin"><a href="{{login}}">Sign In</a></div>
-		{% else %}
-	<div id="signout"><a href="{{logout}}">Sign Out</a></div>
-	<div id="editpro"><a href="/choose_teams">Edit Profile</a>: {{nickname}}</div>
-		{% endif %}
+	{% if login %}
+		<div id="signin"><a href="{{login}}">Sign In</a></div>
+	{% else %}
+		<div id="signin"><a href="{{logout}}">Sign Out</a></div>
+		<a href="/choose_teams">Edit Profile</a>
+		<a href="/feed">Feed</a>
+	{% endif %}
+	</div>
 </div>
 <!-- end #header -->
 <div id="page">
