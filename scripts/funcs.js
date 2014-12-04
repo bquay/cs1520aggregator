@@ -60,9 +60,14 @@ function setLeagueAndTeamAndSubmitForm(form) {
 	
 	var teams = document.getElementById('teams');
 	var teamInput = document.getElementById('team');
-	teamInput.value = teams.options[teams.selectedIndex].text;
 	
-	form.submit();
+    
+    if (teams.options[teams.selectedIndex] == null || teams.options[teams.selectedIndex].text == '') {
+        alert('Please select a league and a team.');
+    } else {
+        teamInput.value = teams.options[teams.selectedIndex].text;
+        form.submit();
+    }
 }
 
 function changeFeed(form) {

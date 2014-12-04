@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script src="scripts/funcs.js">//</script>
+    <script src="scripts/homePage.js">//</script>
 	<title>FanCrawler</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
@@ -32,7 +33,7 @@
 			<form id="search" method="post" action="search">
 			    <input type="hidden" name="league" id="league" />
 				<select id="leagues" onchange="createTeamsDropDown();">
-					<option disabled="disabled" selected="selected"></option>
+					<option id="disabled" disabled="disabled" selected="selected"></option>
                     <option value="mlb">MLB</option>
                     <option value="nba">NBA</option>
                     <option value="nfl">NFL</option>
