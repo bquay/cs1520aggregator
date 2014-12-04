@@ -783,6 +783,7 @@ class GetMLBArticles(webapp2.RequestHandler):
     def post(self):
         get_articles('mlb')
 
+# ----------  AJAX -------------------------- #
 class GetTeams(webapp2.RequestHandler):
     def post(self):
         league = self.request.get('league')
@@ -798,13 +799,32 @@ class GetTeams(webapp2.RequestHandler):
             json_file = json_file + 'nhl-teams.json'
         
         render_template(self, json_file, {})
-    
+        
+class getMoreArticles(webapp2.RequestHandler):
+    def post(self):
+        offset = self.request.get('offset')
+
+        articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME)).order(-Article.date)
+        #articles_query = Article.query((Article.team == team), ancestor=article_key(DEFAULT_ARTICLE_NAME))
+        article_list = articles_query.fetch(offset + 20)
+        
+        article_list = article_list[:-20]
+
+        template_values = {
+            'articles' : article_list
+        }
+        
+        article_template = '/templates/JSON/article_template.json'
+        
+        render_template(self, article_template, template_values) 
+            
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/search', SearchQuery),
     ('/feed', Feed),
     ('/choose_teams', ChooseTeams),
     ('/teamsAjax', GetTeams),
+    ('/getMoreArticles', getMoreArticles),
     ('/getNFLSites', GetNFLSites),
     ('/getNBASites', GetNBASites),
     ('/getNHLSites', GetNHLSites),

@@ -133,3 +133,24 @@ function changeFeed(form) {
 	
 	form.submit();
 }
+
+function moreArticles(offset)
+{
+    var league = document.getElementById("leagues");
+    var leagueInput = leagues.options[leagues.selectedIndex].text;
+    
+    var xmlHttp = createXmlHttp();
+
+    // onreadystatechange will be called every time the state of the XML HTTP object changes
+    xmlHttp.onreadystatechange = function() {
+        // we really only care about 4 (response complete) here.
+        if (xmlHttp.readyState == 4) {
+            var i = 0;
+            // we parse the content of the response
+            var json = JSON.parse(xmlHttp.responseText);
+            var teams = json.teams;
+
+        }
+    }
+    postParameters(xmlHttp, '/getMoreArticles', 'offset='+ offset);
+}

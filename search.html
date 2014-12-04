@@ -3,11 +3,22 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script src="scripts/funcs.js">//</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<title>FanCrawler</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link href="css/default.css" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" href="css/images/ballIcon.png">
+	<script>
+	    var offset = 0;
+	    // taken from http://stackoverflow.com/questions/14035180/jquery-load-more-data-on-scroll
+        $(window).scroll(function() {
+            if($(window).scrollTop() == $(document).height() - $(window).height()) {
+               offset += 20;
+               alert(offset);
+            }
+        });
+	</script>
 </head>
 <body>
 <div id="header">
